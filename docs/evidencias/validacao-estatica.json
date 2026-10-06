@@ -1,0 +1,228 @@
+{
+  "type": "verificacao-estatica",
+  "chapters": [
+    {
+      "name": "01-criacao-basica-do-projeto.md",
+      "files": 2,
+      "errors": []
+    },
+    {
+      "name": "02-arquitetura-e-rotas.md",
+      "files": 4,
+      "errors": []
+    },
+    {
+      "name": "03-servicos-e-tipagens.md",
+      "files": 6,
+      "errors": []
+    },
+    {
+      "name": "04-tela-de-login.md",
+      "files": 6,
+      "errors": []
+    },
+    {
+      "name": "05-contexto-de-autenticacao.md",
+      "files": 9,
+      "errors": []
+    },
+    {
+      "name": "06-recuperando-a-sessao.md",
+      "files": 9,
+      "errors": []
+    },
+    {
+      "name": "07-rotas-privadas.md",
+      "files": 10,
+      "errors": []
+    },
+    {
+      "name": "08-layout-principal.md",
+      "files": 11,
+      "errors": []
+    },
+    {
+      "name": "09-dashboard.md",
+      "files": 11,
+      "errors": []
+    },
+    {
+      "name": "10-buscando-clientes.md",
+      "files": 12,
+      "errors": []
+    },
+    {
+      "name": "11-renderizando-listas.md",
+      "files": 12,
+      "errors": []
+    },
+    {
+      "name": "12-componentes-com-props.md",
+      "files": 13,
+      "errors": []
+    },
+    {
+      "name": "13-detalhes-do-cliente.md",
+      "files": 14,
+      "errors": []
+    },
+    {
+      "name": "14-cadastro-de-cliente.md",
+      "files": 15,
+      "errors": []
+    },
+    {
+      "name": "15-estado-dos-formularios.md",
+      "files": 15,
+      "errors": []
+    },
+    {
+      "name": "16-validacao-do-formulario.md",
+      "files": 17,
+      "errors": []
+    },
+    {
+      "name": "17-edicao-de-cliente.md",
+      "files": 18,
+      "errors": []
+    },
+    {
+      "name": "18-exclusao-de-cliente.md",
+      "files": 18,
+      "errors": []
+    },
+    {
+      "name": "19-modal-de-confirmacao.md",
+      "files": 19,
+      "errors": []
+    },
+    {
+      "name": "20-estados-da-interface.md",
+      "files": 20,
+      "errors": []
+    },
+    {
+      "name": "21-pesquisa-e-filtros.md",
+      "files": 20,
+      "errors": []
+    },
+    {
+      "name": "22-ordenacao-e-paginacao.md",
+      "files": 20,
+      "errors": []
+    },
+    {
+      "name": "23-custom-hooks.md",
+      "files": 21,
+      "errors": []
+    },
+    {
+      "name": "24-services-por-dominio.md",
+      "files": 23,
+      "errors": []
+    },
+    {
+      "name": "25-feedback-com-toasts.md",
+      "files": 26,
+      "errors": []
+    },
+    {
+      "name": "26-logout.md",
+      "files": 26,
+      "errors": []
+    },
+    {
+      "name": "27-perfis-e-permissoes.md",
+      "files": 27,
+      "errors": []
+    },
+    {
+      "name": "28-erros-http-globais.md",
+      "files": 28,
+      "errors": []
+    },
+    {
+      "name": "29-variaveis-de-ambiente.md",
+      "files": 29,
+      "errors": []
+    },
+    {
+      "name": "30-revisao-da-arquitetura.md",
+      "files": 29,
+      "errors": []
+    },
+    {
+      "name": "31-renderizacoes.md",
+      "files": 30,
+      "errors": []
+    },
+    {
+      "name": "32-otimizacao.md",
+      "files": 31,
+      "errors": []
+    },
+    {
+      "name": "33-lazy-loading.md",
+      "files": 31,
+      "errors": []
+    },
+    {
+      "name": "34-acessibilidade.md",
+      "files": 31,
+      "errors": []
+    },
+    {
+      "name": "35-testes-react.md",
+      "files": 31,
+      "errors": []
+    },
+    {
+      "name": "36-build-e-publicacao.md",
+      "files": 31,
+      "errors": []
+    }
+  ],
+  "links": [],
+  "files": [
+    "src/main.tsx",
+    "src/index.css",
+    "src/App.tsx",
+    "src/pages/Home/home.module.css",
+    "src/pages/Home/index.tsx",
+    "src/pages/Login/index.tsx",
+    "src/services/api.ts",
+    "src/types/index.ts",
+    "src/contexts/AuthContext.ts",
+    "src/contexts/AuthProvider.tsx",
+    "src/hooks/useAuth.ts",
+    "src/components/ProtectedRoute.tsx",
+    "src/components/AppLayout.tsx",
+    "src/pages/Clientes/index.tsx",
+    "src/components/ClienteCard.tsx",
+    "src/pages/ClienteDetalhes/index.tsx",
+    "src/pages/ClienteNovo/index.tsx",
+    "src/utils/validateCliente.ts",
+    "src/components/ClienteForm.tsx",
+    "src/pages/ClienteEditar/index.tsx",
+    "src/components/ConfirmDeleteModal.tsx",
+    "src/components/AsyncState.tsx",
+    "src/hooks/useClientes.ts",
+    "src/services/authService.ts",
+    "src/services/clienteService.ts",
+    "src/contexts/ToastContext.ts",
+    "src/contexts/ToastProvider.tsx",
+    "src/hooks/useToast.ts",
+    "src/examples/PermissionsDemo.tsx",
+    "src/utils/getHttpError.ts",
+    ".env.example",
+    "src/vite-env.d.ts",
+    "src/components/RenderProbe.tsx",
+    "src/examples/MemoDemo.tsx",
+    "vite.config.ts",
+    "tests/setup.ts",
+    "tests/ClienteForm.test.tsx",
+    "tests/ConfirmDeleteModal.test.tsx",
+    "tests/AuthProvider.test.tsx",
+    "tests/utils.test.ts"
+  ]
+}

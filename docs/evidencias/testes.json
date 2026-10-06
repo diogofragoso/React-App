@@ -1,0 +1,240 @@
+{
+  "numTotalTestSuites": 5,
+  "numPassedTestSuites": 5,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 15,
+  "numPassedTests": 15,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1790985226326,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "recupera o usuário da API ao abrir",
+          "status": "passed",
+          "title": "recupera o usuário da API ao abrir",
+          "duration": 22.54910000000018,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "401 significa ausência de sessão, sem erro de rede",
+          "status": "passed",
+          "title": "401 significa ausência de sessão, sem erro de rede",
+          "duration": 17.863600000000133,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "falha de rede oferece nova tentativa",
+          "status": "passed",
+          "title": "falha de rede oferece nova tentativa",
+          "duration": 69.71940000000018,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "login muda o usuário compartilhado",
+          "status": "passed",
+          "title": "login muda o usuário compartilhado",
+          "duration": 71.30509999999981,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "logout bem-sucedido remove o usuário",
+          "status": "passed",
+          "title": "logout bem-sucedido remove o usuário",
+          "duration": 66.94039999999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "recuperação antiga não sobrescreve login recente",
+          "status": "passed",
+          "title": "recuperação antiga não sobrescreve login recente",
+          "duration": 66.73139999999967,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1790985228371,
+      "endTime": 1790985228685.7314,
+      "status": "passed",
+      "message": "",
+      "name": "tests/AuthProvider.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "ClienteForm"
+          ],
+          "fullName": "ClienteForm bloqueia entradas inválidas e foca o primeiro campo com erro",
+          "status": "passed",
+          "title": "bloqueia entradas inválidas e foca o primeiro campo com erro",
+          "duration": 114.16300000000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "ClienteForm"
+          ],
+          "fullName": "ClienteForm envia dados normalizados depois da interação real nos campos",
+          "status": "passed",
+          "title": "envia dados normalizados depois da interação real nos campos",
+          "duration": 453.93319999999994,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "ClienteForm"
+          ],
+          "fullName": "ClienteForm bloqueia o formulário durante envio",
+          "status": "passed",
+          "title": "bloqueia o formulário durante envio",
+          "duration": 5.459699999999884,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "ClienteForm"
+          ],
+          "fullName": "ClienteForm gera ids diferentes em duas instâncias",
+          "status": "passed",
+          "title": "gera ids diferentes em duas instâncias",
+          "duration": 2.4032999999999447,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1790985228184,
+      "endTime": 1790985228760.4033,
+      "status": "passed",
+      "message": "",
+      "name": "tests/ClienteForm.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "cancelar não confirma a exclusão",
+          "status": "passed",
+          "title": "cancelar não confirma a exclusão",
+          "duration": 103.01200000000017,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "confirmar chama a ação e oferece um diálogo identificado",
+          "status": "passed",
+          "title": "confirmar chama a ação e oferece um diálogo identificado",
+          "duration": 38.483900000000176,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "operação pendente bloqueia confirmação e cancelamento",
+          "status": "passed",
+          "title": "operação pendente bloqueia confirmação e cancelamento",
+          "duration": 7.642100000000028,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1790985228519,
+      "endTime": 1790985228667.642,
+      "status": "passed",
+      "message": "",
+      "name": "tests/ConfirmDeleteModal.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "normaliza a leitura de mensagens da API",
+          "status": "passed",
+          "title": "normaliza a leitura de mensagens da API",
+          "duration": 1.0574999999998909,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "entrada sem conteúdo útil é inválida",
+          "status": "passed",
+          "title": "entrada sem conteúdo útil é inválida",
+          "duration": 0.30740000000014334,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1790985228203,
+      "endTime": 1790985228204.3074,
+      "status": "passed",
+      "message": "",
+      "name": "tests/utils.test.ts"
+    }
+  ]
+}
