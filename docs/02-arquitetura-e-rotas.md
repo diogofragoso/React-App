@@ -8,13 +8,13 @@
 
 ## Resultado desta etapa
 
-Home e Login com navegação sem recarregar o documento.
+Home e Login com navegação sem recarregar o documento e arquitetura de rotas separada em módulo próprio.
 
-**Conceitos praticados:** páginas e componentes, organização, exports nomeados, props, BrowserRouter, Routes, Route, Link, CSS Modules.
+**Conceitos praticados:** páginas e componentes, organização, exports nomeados, props, BrowserRouter, Routes, Route, Link, separação de rotas, CSS Modules.
 
 ## 1. Criar somente as pastas necessárias
 
-Crie `src/pages/Home` e `src/pages/Login`. Uma page também é um componente; o nome indica que representa uma tela da rota. Um componente reutilizável será colocado em `components` quando aparecer uma necessidade real. Não é preciso começar com dezenas de pastas vazias.
+Crie `src/pages/Home`, `src/pages/Login` e `src/routes`. Uma page também é um componente; o nome indica que representa uma tela da rota. Um componente reutilizável será colocado em `components` quando aparecer uma necessidade real. Não é preciso começar com dezenas de pastas vazias.
 
 **Arquivo: `src/pages/Home/home.module.css`**
 
@@ -67,27 +67,46 @@ export function Login() {
 
 CSS Modules gera nomes de classe próprios para o arquivo. O objeto `styles` conecta a classe local ao JSX.
 
-## 2. Definir as rotas
+## 2. Definir as rotas separadamente
+
+**Propósito do passo:** separar a declaração de rotas em um arquivo dedicado (`src/routes/index.tsx`). Isso mantém o componente raiz `App.tsx` limpo e enxuto, economizando tempo nas etapas seguintes, onde apenas o arquivo de rotas será atualizado conforme novas telas e proteções forem adicionadas.
+
+**Arquivo: `src/routes/index.tsx`**
+
+Crie este arquivo e copie todo o conteúdo:
+
+<!-- file: src/routes/index.tsx -->
+```tsx
+// Arquivo: src/routes/index.tsx
+import { Routes, Route } from 'react-router-dom';
+import { Home } from '../pages/Home';
+import { Login } from '../pages/Login';
+
+export function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<p className="container">Página não encontrada.</p>} />
+    </Routes>
+  );
+}
+```
 
 **Arquivo: `src/App.tsx`**
 
-Substitua todo o conteúdo.
+Agora o `App.tsx` fica responsável unicamente por inicializar o `BrowserRouter` e montar o componente de rotas:
 
 <!-- file: src/App.tsx -->
 ```tsx
 // Arquivo: src/App.tsx
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRoutes } from './routes';
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<p className="container">Página não encontrada.</p>} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
@@ -100,15 +119,18 @@ export default function App() {
 `Link` permite navegação e preserva o comportamento de um link, incluindo abrir em outra aba. Use link para navegar e botão para executar uma ação. Um `<a href="/login">` pede outro documento ao servidor; um `Link` deixa o Router conduzir essa navegação.
 
 Abra Home, clique no link, use Voltar do navegador e acesse uma URL inexistente. Na aba Network, a navegação por Link não deve carregar um novo documento HTML.
+
 ## Conferência antes de avançar
 
-- [ ] As duas páginas e a página não encontrada aparecem.
+- [ ] As rotas foram separadas em `src/routes/index.tsx`.
+- [ ] O `App.tsx` inicializa o `BrowserRouter` e renderiza `<AppRoutes />`.
+- [ ] As duas páginas e a página não encontrada aparecem normalmente.
 - [ ] Links e histórico do navegador funcionam.
 - [ ] Nenhum BrowserRouter foi duplicado em main.tsx.
 
 ## Prática do estudante
 
-Acrescente uma página Sobre com um export nomeado, uma rota `/sobre` e um Link. Explique a diferença entre o caminho do arquivo e o caminho da URL.
+Acrescente uma página Sobre com um export nomeado, declare a nova rota `/sobre` dentro de `src/routes/index.tsx` e coloque um Link na Home. Observe como o `App.tsx` nem precisou ser tocado!
 
 ## Se algo falhar
 
