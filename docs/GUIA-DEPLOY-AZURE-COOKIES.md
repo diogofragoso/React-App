@@ -287,3 +287,4 @@ Após os ajustes, execute o passo a passo a seguir para auditar o comportamento 
 2. A aplicação executa `POST /logout`.
 3. O servidor emite um cabeçalho `Set-Cookie` com expiração no passado (`Max-Age=0`).
 4. O navegador deleta o cookie imediatamente e redireciona o usuário para `/login`.
+
