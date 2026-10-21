@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Form, Button, Alert, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Alert, Card, Modal } from 'react-bootstrap';
 import { api } from '../../services/api';
 import type { LoginCredentials } from '../../types';
 
@@ -48,7 +48,7 @@ export function Login() {
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col md={5}>
-          <Card className="shadow-sm">
+          <Card className="shadow-sm bg-dark text-white rounded  p-4">
             <Card.Body className="p-4">
               <h2 className="text-center mb-4">🔐 Entrar no Sistema</h2>
 
@@ -81,7 +81,7 @@ export function Login() {
                 </Form.Group>
 
                 <div className="d-grid">
-                  <Button variant="primary" type="submit" size="lg" disabled={loading}>
+                  <Button variant="success" type="submit" size="lg" disabled={loading}>
                     {loading ? 'Entrando...' : 'Fazer Login'}
                   </Button>
                 </div>
@@ -91,6 +91,11 @@ export function Login() {
           </Card>
         </Col>
       </Row>
+
+{/* Elabore um modal completo para cadastro de novo usuário */}
+
+    
+
     </Container>
   );
 }
