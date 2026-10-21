@@ -95,7 +95,9 @@ Axios retorna uma Promise: o resultado chega depois. `await` espera aquele resul
 
 O navegador pode guardar o cookie enviado em Set-Cookie e enviá-lo em pedidos posteriores. `withCredentials` habilita credenciais em requisições entre origens; envio e armazenamento também dependem de CORS e das regras de domínio, SameSite e Secure. Não é uma garantia de que qualquer cookie será enviado.
 
-A API precisa permitir exatamente `http://localhost:5173` e `credentials: true`. Use localhost nos dois servidores. Não misture localhost e 127.0.0.1. JavaScript não lê o cookie HttpOnly. Embora o login também devolva token no JSON, esta trilha ignora esse campo e não o armazena.
+A API precisa permitir exatamente `http://localhost:5173` e `credentials: true`. Use localhost nos dois servidores. Não misture localhost e 127.0.0.1. JavaScript não lê o cookie HttpOnly. Embora o login também devolva token no JSON, esta trilha ignora esse campo e não o armazena em `localStorage`.
+
+Para detalhes avançados sobre o comportamento de cookies HttpOnly no Azure e como prevenir vazamento no `localStorage`, leia o [Guia de Deploy no Azure e Cookies HttpOnly](GUIA-DEPLOY-AZURE-COOKIES.md).
 
 Para criar a primeira conta, use POST /users no Swagger com `name`, `email` e uma senha válida segundo o schema da API. Não use dados reais de estudantes.
 ## Conferência antes de avançar
@@ -112,6 +114,6 @@ No Network do navegador, identifique método, URL, status e corpo de uma requisi
 
 404 indica rota incorreta; 401 indica autenticação ausente ou inválida. Erro de CORS pode esconder a resposta do JavaScript; confira a origem no servidor e o Network. Não use wildcard com credenciais.
 
-Referências: [Configuração do Axios](https://axios-http.com/docs/req_config) · [Guia de autenticação da API](../../api_t13/docs/05-autenticacao-com-jwt.md).
+Referências: [Configuração do Axios](https://axios-http.com/docs/req_config) · [Guia de autenticação da API](../../api_t13/docs/05-autenticacao-com-jwt.md) · [Guia de Deploy no Azure e Cookies](GUIA-DEPLOY-AZURE-COOKIES.md).
 
 [← Anterior](02-arquitetura-e-rotas.md) · [Índice](../README.md) · [Próxima →](04-tela-de-login.md)

@@ -6,6 +6,7 @@ import { api } from '../services/api';
 
 export interface AuthContextType {
   user: User | null;
+  /** @deprecated O token JWT agora fica 100% protegido em cookie HttpOnly gerenciado pelo navegador */
   token: string | null;
   loading: boolean;
   login: (credentials: LoginCredentials) => Promise<User>;
@@ -24,60 +25,74 @@ const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Restaura a sessão ao carregar a aplicação
+  // Restaura a sessão ao carregar a aplicação utilizando exclusivamente o cookie HttpOnly
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('user');
-      const savedToken = localStorage.getItem('token');
+    let isMounted = true;
 
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
+    async function restoreSession() {
+      try {
+        // Envia requisição com withCredentials: true.
+        // O navegador anexa automaticamente o cookie HttpOnly 'token'
+        const response = await api.get<User[]>('/users');
+        if (isMounted) {
+          // A API retorna um array contendo a própria conta autenticada
+          const currentUser = response.data?.[0] ?? null;
+          setUser(currentUser);
+        }
+      } catch {
+        if (isMounted) {
+          setUser(null);
+        }
+      } finally {
+        if (isMounted) {
+          // Higienização de segurança: garante que o localStorage não contenha tokens antigos
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setLoading(false);
+        }
       }
-      if (savedToken) {
-        setToken(savedToken);
-      }
-    } catch (err) {
-      console.warn('Erro ao restaurar sessão do localStorage:', err);
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-    } finally {
-      setLoading(false);
     }
+
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<User> => {
+    // Ao efetuar login, o servidor Express define o cookie HttpOnly (token)
+    // via cabeçalho Set-Cookie com SameSite=None (ou Lax) e Secure=true.
     const response = await api.post<LoginResponse>('/login', credentials);
-    const { token: receivedToken, user: loggedUser } = response.data;
+    const { user: loggedUser } = response.data;
 
-    if (receivedToken) {
-      localStorage.setItem('token', receivedToken);
-      setToken(receivedToken);
-    }
+    // Higieniza o localStorage: o token NUNCA deve ser gravado no localStorage
+    // para evitar exposição a ataques de XSS (Cross-Site Scripting).
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
-    localStorage.setItem('user', JSON.stringify(loggedUser));
     setUser(loggedUser);
-
     return loggedUser;
   };
 
   const logout = async () => {
     try {
+      // Notifica o backend para invalidar e limpar o cookie HttpOnly (res.clearCookie)
       await api.post('/logout');
     } catch (err) {
       console.warn('Erro ao efetuar logout na API:', err);
     } finally {
-      localStorage.removeItem('user');
+      // Remove quaisquer resíduos locais e limpa o estado da aplicação
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setUser(null);
-      setToken(null);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, token: null, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -81,7 +81,7 @@ Os blocos de arquivo têm caminho explícito e comentários compatíveis com seu
 | 35 | [Testando a aplicação React](docs/35-testes-react.md) | Vitest, Testing Library, eventos, mocks, act, isolamento, testes de componentes e serviços simulados |
 | 36 | [Build e publicação](docs/36-build-e-publicacao.md) | build, dist, preview, variáveis no build, SPA fallback, HTTPS, cookies, deploy |
 
-Para localizar um assunto por conceito, consulte o [mapa de conceitos](docs/MAPA-DE-CONCEITOS.md). Para consultar verbos, respostas e permissões, use o [contrato da API](docs/CONTRATO-DA-API.md).
+Para localizar um assunto por conceito, consulte o [mapa de conceitos](docs/MAPA-DE-CONCEITOS.md). Para consultar verbos, respostas e permissões, use o [contrato da API](docs/CONTRATO-DA-API.md). Para detalhes de autenticação com cookies e deploy no Azure, leia o [Guia de Deploy no Azure e Cookies HttpOnly](docs/GUIA-DEPLOY-AZURE-COOKIES.md).
 
 ## 🔌 Integração que o guia realmente usa
 

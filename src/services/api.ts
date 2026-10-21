@@ -8,22 +8,14 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:30
 export const api = axios.create({
   baseURL: API_BASE_URL,
   
-  // ESSENCIAL PARA HTTP ONLY COOKIES:
-  // Envia cookies automaticamente em todas as requisições
-  withCredentials: true, 
+  // ESSENCIAL PARA HTTP-ONLY COOKIES:
+  // Envia cookies automaticamente (incluindo o JWT HttpOnly) em todas as requisições
+  // tanto em ambiente local quanto em requisições cross-domain no Azure.
+  withCredentials: true,
+  timeout: 10000,
 });
 
-// Interceptor de Requisição: anexa também o Bearer Token no cabeçalho se disponível
-// Isso garante compatibilidade total mesmo em ambientes cross-domain (ex: Azure + Vercel / Local)
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Interceptor de Resposta: monitora erros de autenticação globais
+// Interceptor de Resposta: captura erros 401 globalmente
 api.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -2,7 +2,7 @@
 
 # 🔌 Contrato usado pelo frontend
 
-[Índice](../README.md) · [03 · Tipos e HTTP](03-servicos-e-tipagens.md)
+[Índice](../README.md) · [03 · Tipos e HTTP](03-servicos-e-tipagens.md) · [Guia Azure & Cookies](GUIA-DEPLOY-AZURE-COOKIES.md)
 
 A referência é a **API construída seguindo a documentação de api_t13**. A aplicação inicial daquele repositório pode estar em outra etapa. Confira as rotas no Swagger da cópia concluída antes de integrar.
 
@@ -56,10 +56,10 @@ Não há PATCH nesta API; use PUT conforme seu contrato. Não há busca/paginaç
 
 ## Sessão no navegador
 
-O cookie token é HttpOnly, SameSite=Lax, path=/ e Secure em produção. A autenticação dura 15 minutos no guia. withCredentials habilita o uso de credenciais entre origens, mas armazenamento e envio também dependem das políticas do navegador e do servidor.
+O cookie token é HttpOnly, path=/ e Secure em produção. Em desenvolvimento local usa SameSite=Lax; em produção cross-domain na nuvem (Azure) adota SameSite=None ou arquitetura de Linked Backend (SameSite=Lax). A autenticação dura 15 minutos no guia. withCredentials habilita o uso de credenciais entre origens, mas armazenamento e envio também dependem das políticas do navegador e do servidor. Para instruções completas sobre deploy na nuvem e isolamento seguro sem localStorage, consulte o [Guia de Deploy no Azure e Cookies HttpOnly](GUIA-DEPLOY-AZURE-COOKIES.md).
 
-A origem de desenvolvimento é http://localhost:5173. Mantenha esse host e porta alinhados com a configuração da API. Escritas por cookie exigem origem permitida. O frontend não deve tentar ler o token do cookie.
+A origem de desenvolvimento é http://localhost:5173. Mantenha esse host e porta alinhados com a configuração da API. Escritas por cookie exigem origem permitida. O frontend não deve tentar ler o token do cookie nem armazená-lo em localStorage.
 
-O login também devolve token em JSON; a trilha ignora esse campo. Logout limpa o cookie e não revoga um JWT copiado previamente. Não existe refresh token neste contrato.
+O login também devolve token em JSON; a aplicação ignora esse campo e confia exclusivamente no cookie HttpOnly. Logout limpa o cookie via endpoint da API. Não existe refresh token neste contrato.
 
 Referências locais: [autenticação](../../api_t13/docs/05-autenticacao-com-jwt.md), [origens e limites](../../api_t13/docs/07-seguranca-e-rate-limit.md), [clientes](../../api_t13/docs/10-automacao-e-geracao-de-codigo.md).
