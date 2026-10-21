@@ -1,63 +1,123 @@
 // src/pages/Login/index.tsx
 import { useState } from 'react';
-import type { SubmitEvent } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Alert, Card, Modal } from 'react-bootstrap';
 import { api } from '../../services/api';
-import type { LoginCredentials } from '../../types';
+import type { LoginCredentials, CreateUserInput } from '../../types';
 
 export function Login() {
-  // 1. Estados da nossa tela
+  // 1. Estados da tela de login
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // Para travar o botão enquanto carrega
+  const [loading, setLoading] = useState(false);
 
-  // Ferramenta do React Router para mudar de página via código
+  // 2. Estados do modal de cadastro de usuário
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regUserTypeId, setRegUserTypeId] = useState<number>(2); // 2 = Aluno (padrão), 3 = Professor
+  const [regLoading, setRegLoading] = useState(false);
+  const [regError, setRegError] = useState<string | null>(null);
+  const [regSuccess, setRegSuccess] = useState<string | null>(null);
+
+  // Ferramenta do React Router para navegação
   const navigate = useNavigate();
 
-  // 2. Função disparada ao submeter o formulário
-  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Evita que a página recarregue ao dar submit
+  // Função para abrir o modal limpando estados anteriores
+  const handleOpenRegister = () => {
+    setRegName('');
+    setRegEmail('');
+    setRegPassword('');
+    setRegUserTypeId(2);
+    setRegError(null);
+    setRegSuccess(null);
+    setShowRegisterModal(true);
+  };
+
+  // Função para fechar o modal
+  const handleCloseRegister = () => {
+    if (!regLoading) {
+      setShowRegisterModal(false);
+    }
+  };
+
+  // 3. Submissão do formulário de login
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(null);
     setLoading(true);
 
     const credentials: LoginCredentials = { email, password };
 
     try {
-      // Fazendo a requisição de login para a API (ajuste a rota se a sua for diferente)
       await api.post('/login', credentials);
-      
-      // Se a linha acima não der erro, significa que recebemos 200 OK.
-      // O navegador já salvou o cookie HttpOnly automaticamente!
-      
-      // Redireciona o usuário para a página Home
       navigate('/');
-      
     } catch (err: any) {
-      // Se a API retornar erro (ex: 401 Credenciais Inválidas)
       console.error(err);
-      setError(err.response?.data?.message || 'E-mail ou senha inválidos. Tente novamente.');
+      setError(err.response?.data?.message || err.response?.data?.error || 'E-mail ou senha inválidos. Tente novamente.');
     } finally {
       setLoading(false);
     }
   };
 
-  // 3. A parte Visual (Interface)
+  // 4. Submissão do formulário de cadastro (Aluno ou Professor)
+  const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setRegError(null);
+    setRegSuccess(null);
+    setRegLoading(true);
+
+    const payload: CreateUserInput = {
+      name: regName.trim() || undefined,
+      email: regEmail.trim(),
+      password: regPassword,
+      userTypeId: Number(regUserTypeId),
+    };
+
+    try {
+      await api.post('/users', payload);
+      setRegSuccess('Conta criada com sucesso! Você já pode fazer login.');
+      
+      // Preenche o e-mail no formulário principal de login para conveniência do usuário
+      setEmail(regEmail);
+
+      // Fecha o modal após 1.5 segundos para o usuário ver a confirmação
+      setTimeout(() => {
+        setShowRegisterModal(false);
+      }, 1500);
+    } catch (err: any) {
+      console.error(err);
+      if (err.response?.data?.errors?.length) {
+        setRegError(err.response.data.errors.map((e: { message: string }) => e.message).join('; '));
+      } else if (err.response?.data?.error) {
+        setRegError(err.response.data.error);
+      } else if (err.response?.data?.message) {
+        setRegError(err.response.data.message);
+      } else {
+        setRegError('Erro ao realizar cadastro. Verifique os dados e tente novamente.');
+      }
+    } finally {
+      setRegLoading(false);
+    }
+  };
+
+  // 5. Interface
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col md={5}>
-          <Card className="shadow-sm bg-dark text-white rounded  p-4">
-            <Card.Body className="p-4">
+          <Card className="shadow-sm bg-dark text-white rounded p-4">
+            <Card.Body className="p-3">
               <h2 className="text-center mb-4">🔐 Entrar no Sistema</h2>
 
-              {/* Se a variável error estiver preenchida, mostra este alerta vermelho */}
+              {/* Alerta de erro de login */}
               {error && <Alert variant="danger">{error}</Alert>}
 
-              {/* Formulário atrelado à nossa função handleSubmit */}
+              {/* Formulário de Login */}
               <Form onSubmit={handleSubmit}>
-                
                 <Form.Group className="mb-3" controlId="formEmail">
                   <Form.Label>Endereço de E-mail</Form.Label>
                   <Form.Control 
@@ -85,17 +145,115 @@ export function Login() {
                     {loading ? 'Entrando...' : 'Fazer Login'}
                   </Button>
                 </div>
-
               </Form>
+
+              <hr className="my-4 border-secondary" />
+
+              {/* Botão para abrir o modal de cadastro */}
+              <div className="text-center">
+                <span className="text-secondary me-2">Não tem uma conta?</span>
+                <Button 
+                  variant="outline-info" 
+                  size="sm" 
+                  onClick={handleOpenRegister}
+                >
+                  Cadastre-se
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-{/* Elabore um modal completo para cadastro de novo usuário */}
+      {/* Modal de Cadastro de Usuário (Aluno / Professor) */}
+      <Modal 
+        show={showRegisterModal} 
+        onHide={handleCloseRegister} 
+        centered
+        backdrop="static"
+      >
+        <Form onSubmit={handleRegisterSubmit}>
+          <Modal.Header closeButton={!regLoading}>
+            <Modal.Title>📝 Cadastrar Nova Conta</Modal.Title>
+          </Modal.Header>
 
-    
+          <Modal.Body>
+            {regError && <Alert variant="danger">{regError}</Alert>}
+            {regSuccess && <Alert variant="success">{regSuccess}</Alert>}
 
+            <Form.Group className="mb-3" controlId="modalRegName">
+              <Form.Label>Nome Completo (Opcional)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ex: Maria Silva"
+                value={regName}
+                onChange={(e) => setRegName(e.target.value)}
+                disabled={regLoading || !!regSuccess}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="modalRegEmail">
+              <Form.Label>E-mail</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="seu.email@exemplo.com"
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
+                required
+                disabled={regLoading || !!regSuccess}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="modalRegPassword">
+              <Form.Label>Senha</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Mínimo 8 caracteres"
+                value={regPassword}
+                onChange={(e) => setRegPassword(e.target.value)}
+                minLength={8}
+                required
+                disabled={regLoading || !!regSuccess}
+              />
+              <Form.Text className="text-muted">
+                A senha deve ter no mínimo 8 caracteres.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="modalRegUserType">
+              <Form.Label>Tipo de Perfil</Form.Label>
+              <Form.Select
+                value={regUserTypeId}
+                onChange={(e) => setRegUserTypeId(Number(e.target.value))}
+                disabled={regLoading || !!regSuccess}
+              >
+                <option value={2}>Aluno</option>
+                <option value={3}>Professor</option>
+              </Form.Select>
+              <Form.Text className="text-muted">
+                Perfis administrativos devem ser atribuídos internamente.
+              </Form.Text>
+            </Form.Group>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button 
+              variant="secondary" 
+              onClick={handleCloseRegister}
+              disabled={regLoading}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              variant="primary" 
+              type="submit" 
+              disabled={regLoading || !!regSuccess}
+            >
+              {regLoading ? 'Cadastrando...' : 'Confirmar Cadastro'}
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </Container>
   );
 }
