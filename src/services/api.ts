@@ -3,27 +3,28 @@ import axios from 'axios';
 
 // Cria uma instância do Axios com configurações padrão
 export const api = axios.create({
-  // URL base da sua API (ajuste a porta conforme o seu back-end)
   baseURL: 'http://localhost:3000', 
   
-  //  ESSENCIAL PARA HTTP ONLY COOKIES:
-  // Essa configuração diz ao navegador para SEMPRE enviar os cookies guardados
-  // (incluindo o nosso JWT HttpOnly) em todas as requisições para a API.
+  // ESSENCIAL PARA HTTP ONLY COOKIES:
+  // Envia cookies automaticamente (incluindo o JWT HttpOnly) em todas as requisições
   withCredentials: true, 
 });
 
-// Exemplo de Interceptor de Resposta (Opcional, mas muito recomendado)
-// Ele "escuta" todas as respostas da API globalmente. Se a API retornar erro 401 
-// (Não Autorizado), sabemos que o cookie/token expirou ou é inválido.
+// Interceptor de Requisição: anexa também o Bearer Token no cabeçalho se disponível
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Interceptor de Resposta: monitora erros de autenticação globais
 api.interceptors.response.use(
-  (response) => {
-    // Se a requisição deu certo, simplesmente retorna a resposta
-    return response; 
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.warn('Sessão expirada ou não autorizada. Redirecionando para o login...');
-      // Futuramente, podemos acionar uma função aqui para deslogar o usuário no front
+      console.warn('Sessão expirada ou não autorizada.');
     }
     return Promise.reject(error);
   }

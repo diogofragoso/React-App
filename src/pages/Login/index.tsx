@@ -1,12 +1,28 @@
 // src/pages/Login/index.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Alert, Card, Modal } from 'react-bootstrap';
 import { api } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import type { LoginCredentials, CreateUserInput } from '../../types';
 
 export function Login() {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redireciona automaticamente se já estiver autenticado
+  useEffect(() => {
+    if (user) {
+      const role = user.role?.toLowerCase();
+      if (role === 'professor') {
+        navigate('/professor');
+      } else if (role === 'aluno') {
+        navigate('/aluno');
+      }
+    }
+  }, [user, navigate]);
+
   // 1. Estados da tela de login
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,9 +38,6 @@ export function Login() {
   const [regLoading, setRegLoading] = useState(false);
   const [regError, setRegError] = useState<string | null>(null);
   const [regSuccess, setRegSuccess] = useState<string | null>(null);
-
-  // Ferramenta do React Router para navegação
-  const navigate = useNavigate();
 
   // Função para abrir o modal limpando estados anteriores
   const handleOpenRegister = () => {
@@ -53,8 +66,17 @@ export function Login() {
     const credentials: LoginCredentials = { email, password };
 
     try {
-      await api.post('/login', credentials);
-      navigate('/');
+      const loggedUser = await login(credentials);
+      const role = loggedUser.role?.toLowerCase();
+
+      // Redirecionamento baseado no perfil recebido do JWT/API
+      if (role === 'professor') {
+        navigate('/professor');
+      } else if (role === 'aluno') {
+        navigate('/aluno');
+      } else {
+        navigate('/');
+      }
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.message || err.response?.data?.error || 'E-mail ou senha inválidos. Tente novamente.');
@@ -100,7 +122,7 @@ export function Login() {
         setRegError('Erro ao realizar cadastro. Verifique os dados e tente novamente.');
       }
     } finally {
-      setRegLoading(false);
+      setLoading(false);
     }
   };
 
@@ -140,10 +162,13 @@ export function Login() {
                   />
                 </Form.Group>
 
-                <div className="d-grid">
+                <div className="d-grid gap-2">
                   <Button variant="success" type="submit" size="lg" disabled={loading}>
                     {loading ? 'Entrando...' : 'Fazer Login'}
                   </Button>
+                  <Link to="/" className="btn btn-outline-secondary btn-sm">
+                    Voltar para a Home
+                  </Link>
                 </div>
               </Form>
 
@@ -157,7 +182,7 @@ export function Login() {
                   size="sm" 
                   onClick={handleOpenRegister}
                 >
-                  Cadastre-se
+                  Cadastre-se como Aluno ou Professor
                 </Button>
               </div>
             </Card.Body>
@@ -231,7 +256,7 @@ export function Login() {
                 <option value={3}>Professor</option>
               </Form.Select>
               <Form.Text className="text-muted">
-                Perfis administrativos devem ser atribuídos internamente.
+                Alunos e Professores possuem áreas e permissões isoladas.
               </Form.Text>
             </Form.Group>
           </Modal.Body>
