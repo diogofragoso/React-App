@@ -12,7 +12,7 @@ export function Home() {
       <Row className="justify-content-center mb-4">
         <Col md={10}>
           <div className="p-5 bg-dark text-white rounded shadow-sm text-center">
-            <h1 className="display-5 fw-bold mb-3">🎓 Portal Acadêmico T13</h1>
+            <h1 className="display-5 fw-bold mb-3">🎓 Portal Acadêmico</h1>
             <p className="lead text-secondary mb-4">
               Sistema com Controle de Acesso por Papéis (RBAC) integrado entre React e API Express.
             </p>

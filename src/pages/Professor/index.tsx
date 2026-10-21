@@ -58,15 +58,15 @@ export function Professor() {
               </Card.Text>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Turma T13 - Fullstack
+                  Turma de Desenvolvimento Fullstack
                   <Badge bg="primary" pill>32 alunos</Badge>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Turma T14 - React Avançado
+                  Turma de React Avançado
                   <Badge bg="primary" pill>28 alunos</Badge>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Turma T11 - APIs REST
+                  Turma de APIs REST
                   <Badge bg="secondary" pill>Encerrada</Badge>
                 </li>
               </ul>

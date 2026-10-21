@@ -10,7 +10,15 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+
+# Arquivos de Ambiente (Segurança e Isolamento Local)
+.env
+.env.local
+.env.*.local
 *.local
+
+# Permite versionar apenas o modelo de exemplo
+!.env.example
 
 # Editor directories and files
 .vscode/*
