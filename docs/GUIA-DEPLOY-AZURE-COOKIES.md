@@ -1,182 +1,86 @@
 <!-- Documento: docs/GUIA-DEPLOY-AZURE-COOKIES.md -->
 
-# 🔐 Guia Definitivo: Autenticação Segura com Cookies HttpOnly e Deploy no Azure (React + Express)
+# 🔐 Autenticação Segura com Cookies HttpOnly e Deploy no Azure (React + Express)
 
 [← Voltar ao Índice](../README.md) · [Contrato da API](CONTRATO-DA-API.md) · [Serviços e Tipagens](03-servicos-e-tipagens.md) · [Contexto de Autenticação](05-contexto-de-autenticacao.md)
 
 ---
 
-## 📌 Sumário Executivo
+## 🎯 1. Visão Geral e Princípios de Arquitetura
 
-Ao publicar uma aplicação web composta por **Front-end em React (Azure Static Web Apps)** e **Back-end em Express (Azure App Service)**, é comum se deparar com a seguinte situação:
+Neste guia, você aprenderá a implementar o padrão recomendado de autenticação na Web moderna integrando um **Front-end em React** hospedado no **Azure Static Web Apps** com uma **API Express** hospedada no **Azure App Service**.
 
-> *"Após realizar o deploy na nuvem, percebi que o token JWT não estava funcionando como cookie `HttpOnly`, mas continuava sendo gravado dentro do `localStorage` do navegador."*
-
-Este guia técnico detalha a **causa raiz** dessa ocorrência, as **vulnerabilidades de segurança** de persistir credenciais no `localStorage`, as **diferenças de arquitetura entre ambientes locais e na nuvem**, as **alterações aplicadas no código** e as **soluções definitivas no Azure**.
-
----
-
-## 🔍 1. Diagnóstico do Problema: Por que isso aconteceu?
-
-O problema observado resulta da convergência de **cinco fatores técnicos comprovados por testes**:
+Em sistemas profissionais, a segurança das credenciais é prioridade absoluta. Por isso, a autenticação deste projeto é baseada integralmente em **Cookies HttpOnly**, eliminando o armazenamento de tokens no `localStorage`.
 
 ```mermaid
-flowchart TD
-    subgraph Frontend["React (Azure Static Web Apps)"]
-        UI["Tela de Login / F5"]
-        LS["localStorage (Inseguro - Acessível via JS/XSS)"]
-        Axios["Axios (withCredentials: true)"]
-    end
+sequenceDiagram
+    autonumber
+    actor Estudante as Navegador do Usuário
+    participant React as Front-end React (Static Web Apps)
+    participant Express as API Express (App Service)
 
-    subgraph Backend["API Express (Azure App Service)"]
-        Proxy["Azure Reverse Proxy (ARR)"]
-        App["Express (trust proxy: 1)"]
-        CookieEngine["Set-Cookie Dinâmico (HttpOnly, Secure, SameSite=None)"]
-    end
+    Estudante->>React: Preenche e-mail e senha
+    React->>Express: POST /login (credenciais com withCredentials: true)
+    Express-->>Estudante: Set-Cookie: token=...; HttpOnly; Secure; SameSite
+    Note over Estudante: O navegador armazena o cookie em área protegida.<br/>O JavaScript NÃO tem acesso ao token.
+    Express-->>React: Retorna dados públicos do usuário (id, nome, role)
+    React->>Estudante: Redireciona para o painel correspondente (/aluno ou /professor)
 
-    UI -->|"1. POST /login"| Axios
-    Axios -->|"2. HTTPS Request"| Proxy
-    Proxy --> App
-    App --> CookieEngine
-    CookieEngine -->|"3. Set-Cookie: token=...; HttpOnly; Secure; SameSite=None"| Axios
-    Axios -->|"4. Armazenamento Seguro"| Navegador["Armazenamento Nativo de Cookies (HttpOnly)"]
-    Axios -.->|"❌ Anti-Pattern Eliminado"| LS
+    Note over Estudante,Express: Recarregar a página (F5) ou Navegação:
+    Estudante->>Express: GET /users (O navegador anexa o cookie automaticamente)
+    Express-->>React: 200 OK com dados da própria conta autenticada
 ```
-
-### Fator 1: O código do Front-end salvava o token manualmente no `localStorage`
-No componente de contexto (`src/context/AuthContext.tsx`), o método `login()` recebia a resposta da API e executava:
-```typescript
-// ❌ CÓDIGO ANTERIOR INSEGURO:
-const { token: receivedToken, user: loggedUser } = response.data;
-if (receivedToken) {
-  localStorage.setItem('token', receivedToken); // Gravava no localStorage!
-}
-```
-Além disso, em `src/services/api.ts`, havia um interceptor do Axios que buscava o token no `localStorage` e o inseria manualmente no cabeçalho `Authorization: Bearer <token>`. Isso fazia com que a aplicação operasse baseada no `localStorage`, ignorando o mecanismo de cookies.
-
-### Fator 2: A barreira Cross-Domain e Public Suffix List no Azure
-Em ambiente de desenvolvimento local, tanto o front-end quanto o back-end rodam em `localhost` (ex: `localhost:5173` e `localhost:3000`). Nesse cenário, os cookies operam sob o mesmo domínio base.
-
-Na nuvem Azure, os serviços recebem domínios padrão distintos:
-- **Front-end (Static Web Apps):** `https://<nome-do-app>.azurestaticapps.net`
-- **Back-end (App Service):** `https://<nome-da-api>.azurewebsites.net`
-
-Tanto `azurestaticapps.net` quanto `azurewebsites.net` estão registrados na **Public Suffix List (PSL)**. Isso significa que, do ponto de vista de segurança dos navegadores, eles são **sites completamente diferentes (Cross-Site / Third-Party Context)**.
-
-### Fator 3: Política `SameSite`, `Secure` e a armadilha do `NODE_ENV`
-- **Causa Crítica Identificada:** Se a variável de ambiente `NODE_ENV` não for explicitamente configurada como `production` nas Configurações do Aplicativo no portal da Azure, a API assume o padrão `development`.
-- Anteriormente, o backend dependia de `env.NODE_ENV === 'production'` estático. Quando esse valor era `false`, o backend emitia o cookie com `SameSite=Lax` e **SEM a flag `Secure`**.
-- **Comportamento do Navegador:** Ao receber uma resposta cross-origin com `Set-Cookie` configurado com `SameSite=Lax` e sem `Secure`, o navegador (Chrome, Edge, Firefox, Safari) **descarta o cookie silenciosamente**! Ele nunca é salvo na aba Cookies.
-- Como o cookie era descartado, a aplicação parecia deslogada após o F5, levando desenvolvedores a salvarem o token no `localStorage` como contorno indevido.
-- **Ajuste Realizado:** A função `getCookieOptions(req)` agora inspeciona os cabeçalhos em tempo de execução: se a requisição vier via HTTPS (`x-forwarded-proto: https`, `req.secure`) ou de uma origem remota, ela força dinamicamente `secure: true` e `sameSite: 'none'`.
-
-### Fator 4: Ausência de `trust proxy` no Express atrás do Azure ARR
-No Azure App Service, a conexão TLS/HTTPS é terminada no balanceador/proxy reverso da Microsoft (ARR). O tráfego interno chega ao Node.js via HTTP. Sem a instrução:
-```typescript
-app.set('trust proxy', 1);
-```
-O Express não reconhece que a requisição original do cliente era HTTPS (`req.secure === false`), o que impede a emissão segura de cookies e afeta a validação de protocolos.
-
-### Fator 5: Validação estrita de Origem no Back-end
-No arquivo `auth.middleware.ts`, requisições com mutação de estado (POST/PUT/DELETE) autenticadas por cookie exigiam que o cabeçalho `Origin` estivesse em uma lista estática (`allowed.includes(origin)`), bloqueando origens dinâmicas do Static Web Apps (como URLs de preview `.5.azurestaticapps.net`).
 
 ---
 
-## 🛡️ 2. Segurança: `HttpOnly Cookie` vs `LocalStorage`
+## 🛡️ 2. Fundamentos de Segurança: Cookies `HttpOnly` vs `localStorage`
 
-A tabela abaixo compara os dois modelos de armazenamento de credenciais:
+Na arquitetura web, existem dois locais comuns onde desenvolvedores costumam salvar identificadores de sessão:
 
-| Critério | `localStorage` | `HttpOnly Cookie` (Padrão Implementado) |
+| Critério | `localStorage` | `HttpOnly Cookie` (Padrão Recomendado) |
 |---|---|---|
-| **Acesso via JavaScript (`document.cookie` / `window.localStorage`)** | **Sim (Acesso Total)** 🚨 | **Não (Inacessível por scripts)** 🔒 |
-| **Proteção contra Ataques XSS (Cross-Site Scripting)** | **Nenhuma.** Se um script malicioso for injetado, ele rouba o JWT imediatamente. | **Alta.** O JavaScript injetado não consegue ler o cookie `HttpOnly`. |
-| **Envio automático pelo navegador** | Não (exige interceptor de requisição no código). | **Sim** (o navegador envia automaticamente com `withCredentials: true`). |
-| **Exposição no DevTools (F12)** | Legível em texto claro na aba *Local Storage*. | Protegido na aba *Cookies* com a flag `HttpOnly` marcada. |
-| **Controle de Expiração** | Manual via código. | Gerenciado nativamente pelo navegador via atributo `Max-Age` / `Expires`. |
+| **Acesso por JavaScript (`window.localStorage` / `document.cookie`)** | **Sim (Acesso Total)** 🚨 | **Não (Inacessível para scripts)** 🔒 |
+| **Proteção contra Ataques XSS (*Cross-Site Scripting*)** | **Vulnerável:** qualquer script injetado rouba o token JWT imediatamente. | **Protegido:** scripts maliciosos não conseguem ler o cookie. |
+| **Envio das Credenciais** | Manual (necessita de interceptor HTTP para injetar cabeçalhos). | Automático (gerenciado nativamente pelo navegador). |
+| **Inspeção no DevTools (F12)** | Exposto em texto legível na aba *Local Storage*. | Protegido na aba *Cookies* com a flag **HttpOnly** ativa (✔️). |
+| **Gerenciamento de Expiração** | Manual via código JavaScript. | Automático pelo navegador via atributo `Max-Age` / `Expires`. |
 
 > [!IMPORTANT]
-> **Regra de Ouro:** Tokens de autenticação JWT em aplicações para navegador nunca devem ser armazenados em `localStorage` ou `sessionStorage`. O padrão correto é mantê-los exclusivamente dentro de cookies protegidos com as flags `HttpOnly`, `Secure` e `SameSite`.
+> **Regra de Ouro da Segurança Web:**
+> Tokens JWT de autenticação nunca devem ser gravados em `localStorage` ou `sessionStorage`. O padrão seguro é mantê-los exclusivamente dentro de cookies protegidos com as diretivas `HttpOnly`, `Secure` e `SameSite`.
 
 ---
 
-## 🛠️ 3. Ajustes Implementados no Código
+## ⚙️ 3. Implementação no Back-end (Express)
 
-Para corrigir o comportamento e garantir a conformidade com as melhores práticas, as seguintes alterações foram realizadas:
+O back-end é responsável por gerar o token JWT e emitir o cabeçalho `Set-Cookie` com os atributos corretos para cada ambiente.
 
-### 1. Front-end: `React-App/src/context/AuthContext.tsx`
-- **Remoção total de `localStorage` para tokens:** O método `login()` não armazena mais `receivedToken` no `localStorage`.
-- **Restauração de Sessão Segura (`useEffect`):** Ao recarregar a página (F5), a aplicação consulta o endpoint autenticado `GET /users` enviando automaticamente o cookie `HttpOnly`. Se o cookie for válido, a sessão é restaurada com os dados e o perfil (`role`) do usuário.
-- **Higienização Preventiva:** O código remove automaticamente qualquer token remanescente de versões antigas do `localStorage` (`localStorage.removeItem('token')`).
-- **Logout Seguro:** O método `logout()` invoca o endpoint `POST /logout` da API, permitindo que o servidor limpe o cookie no navegador via cabeçalho `Set-Cookie`.
+### 1. Suporte a Proxy Reverso (`src/app.ts`)
+
+No Azure App Service, a conexão HTTPS do cliente chega ao servidor através do balanceador ARR da Microsoft. Para que o Express reconheça conexões seguras e o protocolo correto, ative o `trust proxy`:
 
 ```typescript
-// Trecho corrigido em React-App/src/context/AuthContext.tsx:
-const login = async (credentials: LoginCredentials): Promise<User> => {
-  const response = await api.post<LoginResponse>('/login', credentials);
-  const { user: loggedUser } = response.data;
+// src/app.ts
+import express from 'express';
 
-  // Higieniza o localStorage: credenciais nunca devem residir em storage de script
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-
-  setUser(loggedUser);
-  return loggedUser;
-};
-```
-
-### 2. Front-end: `React-App/src/services/api.ts`
-- O interceptor de requisição que lia o `token` do `localStorage` e inseria o cabeçalho `Authorization: Bearer` foi **completamente removido**.
-- Mantida a configuração essencial:
-```typescript
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true, // Garante o transporte do cookie HttpOnly
-  timeout: 10000,
-});
-```
-
-### 3. Front-end: `React-App/public/staticwebapp.config.json` e raiz
-- Configurado o roteamento de SPA (*Single Page Application*) e o cabeçalho de Content Security Policy (CSP):
-```json
-{
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/*.{png,jpg,gif,ico,svg}"]
-  },
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
-  },
-  "globalHeaders": {
-    "content-security-policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
-  }
-}
-```
-
-### 4. Back-end: `express.js_API/src/app.ts`
-- Inclusão da diretiva `trust proxy`:
-```typescript
 export const app = express();
-app.set('trust proxy', 1); // Indispensável para Azure App Service
+
+// Permite que o Express identifique conexões HTTPS seguras atrás do Azure ARR
+app.set('trust proxy', 1);
 ```
 
-### 5. Back-end: `express.js_API/src/middlewares/auth.middleware.ts`
-- Atualização da validação de origem para suportar subdomínios dinâmicos do Azure Static Web Apps:
-```typescript
-if (authorization === undefined && unsafe) {
-  const origin = req.get('origin');
-  if (!origin || !isOriginAllowed(origin)) {
-    res.status(403).json({ error: 'Origem obrigatória e confiável para autenticação por cookie.' });
-    return;
-  }
-}
-```
+### 2. Emissão Dinâmica do Cookie (`src/controllers/auth.controller.ts`)
 
-### 6. Back-end: `express.js_API/src/controllers/auth.controller.ts`
-- Emissão de cookie dinamicamente resiliente a HTTPS e proxies:
+A função `getCookieOptions(req)` define as diretivas de acordo com o ambiente:
+- **Nuvem (Azure / HTTPS):** aplica `httpOnly: true`, `secure: true` e `sameSite: 'none'`.
+- **Local (`http://localhost`):** aplica `httpOnly: true`, `secure: false` e `sameSite: 'lax'`.
+
 ```typescript
+// src/controllers/auth.controller.ts
+import type { Request, Response } from 'express';
+import { AuthService } from '../services/auth.service.js';
+import { env } from '../config/env.js';
+
 export const getCookieOptions = (req: Request) => {
   const isHttps = req.secure || req.get('x-forwarded-proto') === 'https' || env.NODE_ENV === 'production';
   const origin = req.get('origin') || '';
@@ -205,58 +109,232 @@ export const logout = (req: Request, res: Response) => {
 };
 ```
 
+### 3. Validação de Origens Dinâmicas (`src/middlewares/auth.middleware.ts`)
+
+Em mutações de estado (POST, PUT, DELETE) autenticadas por cookie, o middleware valida a origem da requisição garantindo compatibilidade com subdomínios do Static Web Apps:
+
+```typescript
+// src/middlewares/auth.middleware.ts
+if (authorization === undefined && unsafe) {
+  const origin = req.get('origin');
+  if (!origin || !isOriginAllowed(origin)) {
+    res.status(403).json({ error: 'Origem obrigatória e confiável para autenticação por cookie.' });
+    return;
+  }
+}
+```
+
 ---
 
-## 🚀 4. As Duas Estratégias de Deploy no Azure
+## 💻 4. Implementação no Front-end (React)
 
-Existem dois caminhos arquiteturais para operar com cookies no Azure:
+O front-end não manipula o token diretamente: ele apenas delega ao navegador o envio dos cookies e mantém em memória os dados do usuário autenticado.
 
-### Estratégia A: Backend Vinculado no Azure Static Web Apps (Recomendada)
+### 1. Cliente HTTP com Credenciais (`src/services/api.ts`)
 
-Nesta estratégia, o Azure Static Web Apps roteia automaticamente as chamadas da URL `/api/*` diretamente para o seu Azure App Service.
+A propriedade `withCredentials: true` é obrigatória no Axios para que o navegador inclua cookies em requisições entre origens:
+
+```typescript
+// src/services/api.ts
+import axios from 'axios';
+
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+export const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true, // Essencial: habilita o transporte de cookies HttpOnly
+  timeout: 10000,
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn('Sessão expirada ou não autorizada na API:', API_BASE_URL);
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+### 2. Contexto de Autenticação (`src/context/AuthContext.tsx`)
+
+Gerencia o ciclo de vida da sessão exclusivamente por cookies HttpOnly:
+
+```typescript
+// src/context/AuthContext.tsx
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import type { User, LoginCredentials, LoginResponse } from '../types';
+import { api } from '../services/api';
+
+export interface AuthContextType {
+  user: User | null;
+  /** @deprecated O token JWT agora fica 100% protegido em cookie HttpOnly gerenciado pelo navegador */
+  token: string | null;
+  loading: boolean;
+  login: (credentials: LoginCredentials) => Promise<User>;
+  logout: () => Promise<void>;
+}
+
+const defaultAuthContext: AuthContextType = {
+  user: null,
+  token: null,
+  loading: false,
+  login: async () => { throw new Error('AuthProvider não inicializado.'); },
+  logout: async () => {},
+};
+
+const AuthContext = createContext<AuthContextType>(defaultAuthContext);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Restaura a sessão ao carregar a aplicação utilizando exclusivamente o cookie HttpOnly
+  useEffect(() => {
+    let isMounted = true;
+
+    async function restoreSession() {
+      try {
+        // Envia requisição com withCredentials: true.
+        // O navegador anexa automaticamente o cookie HttpOnly 'token'
+        const response = await api.get<User[]>('/users');
+        if (isMounted) {
+          const currentUser = response.data?.[0] ?? null;
+          setUser(currentUser);
+        }
+      } catch {
+        if (isMounted) {
+          setUser(null);
+        }
+      } finally {
+        if (isMounted) {
+          // Higienização preventiva de segurança
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setLoading(false);
+        }
+      }
+    }
+
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const login = async (credentials: LoginCredentials): Promise<User> => {
+    // Ao autenticar, o servidor Express define o cookie HttpOnly via cabeçalho Set-Cookie
+    const response = await api.post<LoginResponse>('/login', credentials);
+    const { user: loggedUser } = response.data;
+
+    // Higieniza o storage para assegurar ausência de dados sensíveis
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    setUser(loggedUser);
+    return loggedUser;
+  };
+
+  const logout = async () => {
+    try {
+      // Solicita ao backend a invalidação do cookie via cabeçalho Set-Cookie (Max-Age=0)
+      await api.post('/logout');
+    } catch (err) {
+      console.warn('Erro ao efetuar logout na API:', err);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, token: null, loading, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
+  return context ?? defaultAuthContext;
+}
+```
+
+### 3. Configuração de Roteamento SPA (`public/staticwebapp.config.json`)
+
+Para que as rotas da aplicação (como `/login`, `/aluno`, `/professor`) funcionem corretamente no recarregamento (F5) na nuvem, configure as regras de *fallback*:
+
+```json
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/*.{png,jpg,gif,ico,svg}"]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
+  "globalHeaders": {
+    "content-security-policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
+  }
+}
+```
+
+---
+
+## 🚀 5. Estratégias de Deploy no Azure
+
+Existem dois modelos arquiteturais para hospedar sua aplicação no Azure:
+
+### Estratégia A: Backend Vinculado (Linked Backend - Recomendada)
+
+No Azure Static Web Apps, você pode vincular seu Azure App Service como um *backend gerenciado*.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Aluno as Usuário (Navegador)
-    participant SWA as Azure Static Web Apps (app.azurestaticapps.net)
-    participant AppService as Azure App Service (expresst13.azurewebsites.net)
+    actor Usuario as Navegador
+    participant SWA as Azure Static Web Apps (/api/*)
+    participant AppService as Azure App Service
 
-    Aluno->>SWA: POST /api/login (credenciais)
-    Note over SWA,AppService: Roteamento interno transparente (Mesma Origem)
+    Usuario->>SWA: POST /api/login
+    Note over SWA,AppService: Roteamento interno na mesma origem
     SWA->>AppService: Repassa requisição
     AppService-->>SWA: Set-Cookie: token=...; HttpOnly; SameSite=Lax
-    SWA-->>Aluno: Resposta 200 OK + Cookie First-Party
-    Note over Aluno: O navegador armazena o cookie como First-Party nativo. Nenhum browser bloqueia!
+    SWA-->>Usuario: Resposta 200 OK + Cookie First-Party
 ```
 
-#### Vantagens da Estratégia A:
-1. **Cookie First-Party (Mesmo Domínio):** Não há restrições de terceiros. Funciona no Safari, Chrome, Edge e Brave sem ressalvas.
-2. **`SameSite=Lax`:** Não necessita de `SameSite=None`.
-3. **Zero complexidade com CORS:** O tráfego do front-end e da API passa pela mesma origem.
+#### Vantagens:
+- **Cookies de Primeira Parte (*First-Party*):** Como o front-end e a API compartilham o mesmo domínio, os cookies operam com `SameSite=Lax`. Nenhum navegador aplica restrições de terceiros.
+- **Simplificação de CORS:** Não há necessidade de gerenciar cabeçalhos complexos de cross-origin.
 
-#### Como configurar no Portal do Azure:
-1. Acesse o seu recurso **Azure Static Web Apps**.
-2. No menu lateral, acesse **Configurações** ➔ **Back-ends vinculados (Linked backends)**.
-3. Clique em **Vincular** e selecione o tipo de recurso **Serviço de Aplicativo (App Service)**.
-4. Selecione a sua API Express (`expresst13-...`).
-5. No front-end React, configure a variável de ambiente:
+#### Configuração no Portal do Azure:
+1. Acesse o recurso **Azure Static Web Apps**.
+2. No menu lateral, selecione **Configurações** ➔ **Back-ends vinculados**.
+3. Clique em **Vincular** e aponte para o seu **Serviço de Aplicativo (App Service)**.
+4. No front-end React, aponte a URL base para `/api`:
    ```env
    VITE_API_URL=/api
    ```
 
 ---
 
-### Estratégia B: Comunicação Direta Cross-Origin (HTTPS Cross-Site)
+### Estratégia B: Comunicação Direta Cross-Origin (HTTPS)
 
-Caso a aplicação utilize comunicação direta entre os domínios `azurestaticapps.net` e `azurewebsites.net`:
+Quando o front-end (`azurestaticapps.net`) se comunica diretamente com a URL pública da API (`azurewebsites.net`):
 
-#### Configuração das Variáveis no Azure App Service:
-No Portal do Azure (**App Service ➔ Configuração ➔ Configurações do Aplicativo**):
+#### Configuração no Azure App Service:
+No Portal do Azure (**Seu App Service ➔ Configuração ➔ Configurações do Aplicativo**):
 - `NODE_ENV`: `production`
 - `FRONTEND_ORIGIN`: `https://<seu-app>.azurestaticapps.net`
 - `API_ORIGIN`: `https://expresst13-gtazeuceene4a2d4.canadacentral-01.azurewebsites.net`
-- `JWT_SECRET`: *(chave segura de 32+ caracteres)*
+- `JWT_SECRET`: *(chave segura com mais de 32 caracteres)*
 - `DATABASE_URL`: `postgresql://...`
 
 #### Configuração no React (`.env.production`):
@@ -266,74 +344,25 @@ VITE_API_URL=https://expresst13-gtazeuceene4a2d4.canadacentral-01.azurewebsites.
 
 ---
 
-## 🧪 5. Scripts de Validação Automatizada
+## 🧪 6. Roteiro de Validação Prática no DevTools (F12)
 
-Para garantir a ausência de regressões, disponibilizamos dois scripts de testes automatizados:
+Para validar se a autenticação está operando com sucesso:
 
-### 1. Teste de Higienização de Storage no React (`React-App/scripts/test-storage-security.mjs`):
-Execução:
-```bat
-node scripts/test-storage-security.mjs
-```
-Saída esperada:
-```
-🧪 Iniciando Testes de Higienização de Storage no React-App...
-✅ Teste 1 PASSOU: Nenhum arquivo em src/ grava dados via localStorage.setItem!
-✅ Teste 2 PASSOU: api.ts utiliza exclusivamente withCredentials: true e não possui interceptor de localStorage.
-✅ Teste 3 PASSOU: Higienização de Storage elimina qualquer credencial remanescente.
-🎉 TODOS OS TESTES DE VALIDAÇÃO DE SEGURANÇA DO REACT PASSARAM COM SUCESSO!
-```
-
-### 2. Teste de Emissão de Cookies no Express (`express.js_API/src/scripts/test-cookie-security.ts`):
-Execução:
-```bat
-node node_modules/tsx/dist/cli.mjs src/scripts/test-cookie-security.ts
-```
-Saída esperada:
-```
-🧪 Iniciando Testes Automatizados de Emissão de Cookies HttpOnly...
-✅ Teste 1 PASSOU: Cookie configurado com HttpOnly, Secure=true e SameSite=None para Azure Static Web Apps.
-✅ Teste 2 PASSOU: Resiliência comprovada! Mesmo sem NODE_ENV=production no Azure, o cookie é emitido com Secure e SameSite=None.
-✅ Teste 3 PASSOU: Ambiente local continua funcionando perfeitamente em HTTP sem quebrar cookies.
-🎉 TODOS OS TESTES DE SEGURANÇA DE COOKIES PASSARAM COM SUCESSO!
-```
-
----
-
-## 📋 6. Roteiro de Verificação Manual no DevTools (F12)
-
-Após os ajustes, execute o passo a passo a seguir para auditar o comportamento da aplicação no navegador:
-
-### Passo 1: Limpar o estado anterior
-1. Abra a aplicação no navegador (local ou no Azure).
-2. Pressione `F12` para abrir o **DevTools**.
-3. Acesse a aba **Application** (ou **Aplicativo**):
-   - Em **Storage ➔ Local Storage**, confira se a chave `token` foi removida.
-   - Em **Storage ➔ Cookies**, limpe os cookies existentes para iniciar um teste limpo.
-
-### Passo 2: Efetuar Login
-1. Realize o login com uma conta de Aluno ou Professor.
-2. Observe na aba **Network (Rede)** a requisição `POST /login`:
-   - Cabeçalho de resposta: deve conter `Set-Cookie: token=...; Path=/; HttpOnly; SameSite=None; Secure`
-3. Retorne à aba **Application ➔ Storage ➔ Cookies**:
-   - Expanda o domínio da API (`expresst13-...azurewebsites.net`).
-   - O cookie `token` estará listado.
-   - A coluna **HttpOnly** estará com uma marcação ativa (✔️).
-   - A coluna **Secure** estará com uma marcação ativa (✔️).
-   - O valor **NÃO** poderá ser lido por nenhum script no console (`document.cookie` retornará vazio para o token).
-4. Inspecione **Application ➔ Storage ➔ Local Storage**:
-   - **Confirmação de Sucesso:** Não existe nenhum item com chave `token` gravado no Local Storage.
-
-### Passo 3: Testar a Persistência de Sessão com `F5`
-1. Estando autenticado em `/aluno` ou `/professor`, recarregue a página (`F5`).
-2. Observe na aba **Network**:
-   - A aplicação executa uma chamada `GET /users`.
-   - O cabeçalho da requisição inclui automaticamente `Cookie: token=...`.
-   - A API valida o cookie e retorna `200 OK` com os dados do usuário.
-   - O usuário permanece logado e o guardião de rotas mantém o acesso sem redirecionar para o login.
-
-### Passo 4: Testar o Logout
-1. Clique no botão **"Sair"**.
-2. A aplicação executa `POST /logout`.
-3. O servidor emite um cabeçalho `Set-Cookie` com expiração no passado (`Max-Age=0`).
-4. O navegador deleta o cookie imediatamente e redireciona o usuário para `/login`.
+1. **Abrir as Ferramentas do Desenvolvedor (`F12`):**
+   - Acesse a aplicação no navegador.
+2. **Conferir o Login:**
+   - Realize o login com uma conta de Aluno ou Professor.
+   - Na aba **Network (Rede)**, observe a resposta de `POST /login`:
+     * O cabeçalho deve conter `Set-Cookie: token=...; HttpOnly; ...`
+3. **Auditar os Cookies:**
+   - Acesse a aba **Application (Aplicativo)** ➔ **Storage** ➔ **Cookies**.
+   - Selecione o domínio da API. O cookie `token` estará listado com a coluna **HttpOnly** marcada (✔️).
+4. **Auditar o LocalStorage:**
+   - Acesse **Application** ➔ **Storage** ➔ **Local Storage**.
+   - **Resultado esperado:** a chave `token` **não existe** no Local Storage.
+5. **Testar Atualização de Página (`F5`):**
+   - Pressione `F5` em uma rota protegida (`/aluno` ou `/professor`).
+   - A requisição `GET /users` enviará o cookie automaticamente e a sessão permanecerá ativa.
+6. **Testar Logout:**
+   - Clique em **Sair**.
+   - O servidor invalida o cookie e a aplicação retorna à tela de login.
