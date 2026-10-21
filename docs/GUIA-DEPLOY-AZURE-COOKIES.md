@@ -18,7 +18,7 @@ Este guia técnico detalha a **causa raiz** dessa ocorrência, as **vulnerabilid
 
 ## 🔍 1. Diagnóstico do Problema: Por que isso aconteceu?
 
-O problema observado resulta da convergência de **cinco fatores técnicos**:
+O problema observado resulta da convergência de **cinco fatores técnicos comprovados por testes**:
 
 ```mermaid
 flowchart TD
@@ -31,16 +31,16 @@ flowchart TD
     subgraph Backend["API Express (Azure App Service)"]
         Proxy["Azure Reverse Proxy (ARR)"]
         App["Express (trust proxy: 1)"]
-        CookieEngine["Set-Cookie (HttpOnly, Secure, SameSite)"]
+        CookieEngine["Set-Cookie Dinâmico (HttpOnly, Secure, SameSite=None)"]
     end
 
     UI -->|"1. POST /login"| Axios
     Axios -->|"2. HTTPS Request"| Proxy
     Proxy --> App
     App --> CookieEngine
-    CookieEngine -->|"3. Set-Cookie + JSON"| Axios
-    Axios -->|"4. Armazenamento Correto"| Navegador["Armazenamento Nativo de Cookies (HttpOnly)"]
-    Axios -.->|"❌ Anti-Pattern Anterior"| LS
+    CookieEngine -->|"3. Set-Cookie: token=...; HttpOnly; Secure; SameSite=None"| Axios
+    Axios -->|"4. Armazenamento Seguro"| Navegador["Armazenamento Nativo de Cookies (HttpOnly)"]
+    Axios -.->|"❌ Anti-Pattern Eliminado"| LS
 ```
 
 ### Fator 1: O código do Front-end salvava o token manualmente no `localStorage`
@@ -63,10 +63,12 @@ Na nuvem Azure, os serviços recebem domínios padrão distintos:
 
 Tanto `azurestaticapps.net` quanto `azurewebsites.net` estão registrados na **Public Suffix List (PSL)**. Isso significa que, do ponto de vista de segurança dos navegadores, eles são **sites completamente diferentes (Cross-Site / Third-Party Context)**.
 
-### Fator 3: Política `SameSite` e bloqueio de Cookies de Terceiros
-- Um cookie emitido com `SameSite=Lax` é rejeitado pelos navegadores em requisições assíncronas (AJAX / Axios / Fetch) originadas de um site diferente.
-- Para requisições cross-site funcionarem, o cookie precisa obrigatoriamente de `SameSite=None` **e** `Secure=true`.
-- Adicionalmente, navegadores modernos (como Safari com ITP, Brave com Shields e versões recentes do Google Chrome) bloqueiam ou particionam cookies de terceiros por padrão, a menos que o front-end e o back-end compartilhem a mesma origem ou usem a vinculação nativa de backend.
+### Fator 3: Política `SameSite`, `Secure` e a armadilha do `NODE_ENV`
+- **Causa Crítica Identificada:** Se a variável de ambiente `NODE_ENV` não for explicitamente configurada como `production` nas Configurações do Aplicativo no portal da Azure, a API assume o padrão `development`.
+- Anteriormente, o backend dependia de `env.NODE_ENV === 'production'` estático. Quando esse valor era `false`, o backend emitia o cookie com `SameSite=Lax` e **SEM a flag `Secure`**.
+- **Comportamento do Navegador:** Ao receber uma resposta cross-origin com `Set-Cookie` configurado com `SameSite=Lax` e sem `Secure`, o navegador (Chrome, Edge, Firefox, Safari) **descarta o cookie silenciosamente**! Ele nunca é salvo na aba Cookies.
+- Como o cookie era descartado, a aplicação parecia deslogada após o F5, levando desenvolvedores a salvarem o token no `localStorage` como contorno indevido.
+- **Ajuste Realizado:** A função `getCookieOptions(req)` agora inspeciona os cabeçalhos em tempo de execução: se a requisição vier via HTTPS (`x-forwarded-proto: https`, `req.secure`) ou de uma origem remota, ela força dinamicamente `secure: true` e `sameSite: 'none'`.
 
 ### Fator 4: Ausência de `trust proxy` no Express atrás do Azure ARR
 No Azure App Service, a conexão TLS/HTTPS é terminada no balanceador/proxy reverso da Microsoft (ARR). O tráfego interno chega ao Node.js via HTTP. Sem a instrução:
@@ -84,7 +86,7 @@ No arquivo `auth.middleware.ts`, requisições com mutação de estado (POST/PUT
 
 A tabela abaixo compara os dois modelos de armazenamento de credenciais:
 
-| Critério | `localStorage` | `HttpOnly Cookie` (Recomendado) |
+| Critério | `localStorage` | `HttpOnly Cookie` (Padrão Implementado) |
 |---|---|---|
 | **Acesso via JavaScript (`document.cookie` / `window.localStorage`)** | **Sim (Acesso Total)** 🚨 | **Não (Inacessível por scripts)** 🔒 |
 | **Proteção contra Ataques XSS (Cross-Site Scripting)** | **Nenhuma.** Se um script malicioso for injetado, ele rouba o JWT imediatamente. | **Alta.** O JavaScript injetado não consegue ler o cookie `HttpOnly`. |
@@ -104,7 +106,7 @@ Para corrigir o comportamento e garantir a conformidade com as melhores prática
 ### 1. Front-end: `React-App/src/context/AuthContext.tsx`
 - **Remoção total de `localStorage` para tokens:** O método `login()` não armazena mais `receivedToken` no `localStorage`.
 - **Restauração de Sessão Segura (`useEffect`):** Ao recarregar a página (F5), a aplicação consulta o endpoint autenticado `GET /users` enviando automaticamente o cookie `HttpOnly`. Se o cookie for válido, a sessão é restaurada com os dados e o perfil (`role`) do usuário.
-- **Higienização Preventiva:** O código remove automaticamente qualquer token remanescente de versões antigas do `localStorage`.
+- **Higienização Preventiva:** O código remove automaticamente qualquer token remanescente de versões antigas do `localStorage` (`localStorage.removeItem('token')`).
 - **Logout Seguro:** O método `logout()` invoca o endpoint `POST /logout` da API, permitindo que o servidor limpe o cookie no navegador via cabeçalho `Set-Cookie`.
 
 ```typescript
@@ -123,7 +125,7 @@ const login = async (credentials: LoginCredentials): Promise<User> => {
 ```
 
 ### 2. Front-end: `React-App/src/services/api.ts`
-- O interceptor de requisição que lia o `token` do `localStorage` e inseria o cabeçalho `Authorization: Bearer` foi **removido**.
+- O interceptor de requisição que lia o `token` do `localStorage` e inseria o cabeçalho `Authorization: Bearer` foi **completamente removido**.
 - Mantida a configuração essencial:
 ```typescript
 export const api = axios.create({
@@ -173,21 +175,33 @@ if (authorization === undefined && unsafe) {
 ```
 
 ### 6. Back-end: `express.js_API/src/controllers/auth.controller.ts`
-- Emissão do cookie com parâmetros dinâmicos:
+- Emissão de cookie dinamicamente resiliente a HTTPS e proxies:
 ```typescript
-const isProduction = env.NODE_ENV === 'production';
+export const getCookieOptions = (req: Request) => {
+  const isHttps = req.secure || req.get('x-forwarded-proto') === 'https' || env.NODE_ENV === 'production';
+  const origin = req.get('origin') || '';
+  const isCrossDomain = Boolean(origin && !origin.includes('localhost') && !origin.includes('127.0.0.1'));
+  const useSecure = isHttps || isCrossDomain;
 
-const cookieOptions = {
-  httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? ('none' as const) : ('lax' as const),
-  path: '/',
+  return {
+    httpOnly: true,
+    secure: useSecure,
+    sameSite: useSecure ? ('none' as const) : ('lax' as const),
+    path: '/',
+  };
 };
 
 export const login = async (req: Request, res: Response) => {
   const result = await AuthService.login(req.body);
-  res.cookie('token', result.token, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
+  const options = getCookieOptions(req);
+  res.cookie('token', result.token, { ...options, maxAge: 15 * 60 * 1000 });
   res.json(result);
+};
+
+export const logout = (req: Request, res: Response) => {
+  const options = getCookieOptions(req);
+  res.clearCookie('token', options);
+  res.status(204).send();
 };
 ```
 
@@ -252,9 +266,43 @@ VITE_API_URL=https://expresst13-gtazeuceene4a2d4.canadacentral-01.azurewebsites.
 
 ---
 
-## 🧪 5. Roteiro de Verificação e Evidências no Navegador
+## 🧪 5. Scripts de Validação Automatizada
 
-Após os ajustes, execute o passo a passo a seguir para auditar o comportamento da aplicação:
+Para garantir a ausência de regressões, disponibilizamos dois scripts de testes automatizados:
+
+### 1. Teste de Higienização de Storage no React (`React-App/scripts/test-storage-security.mjs`):
+Execução:
+```bat
+node scripts/test-storage-security.mjs
+```
+Saída esperada:
+```
+🧪 Iniciando Testes de Higienização de Storage no React-App...
+✅ Teste 1 PASSOU: Nenhum arquivo em src/ grava dados via localStorage.setItem!
+✅ Teste 2 PASSOU: api.ts utiliza exclusivamente withCredentials: true e não possui interceptor de localStorage.
+✅ Teste 3 PASSOU: Higienização de Storage elimina qualquer credencial remanescente.
+🎉 TODOS OS TESTES DE VALIDAÇÃO DE SEGURANÇA DO REACT PASSARAM COM SUCESSO!
+```
+
+### 2. Teste de Emissão de Cookies no Express (`express.js_API/src/scripts/test-cookie-security.ts`):
+Execução:
+```bat
+node node_modules/tsx/dist/cli.mjs src/scripts/test-cookie-security.ts
+```
+Saída esperada:
+```
+🧪 Iniciando Testes Automatizados de Emissão de Cookies HttpOnly...
+✅ Teste 1 PASSOU: Cookie configurado com HttpOnly, Secure=true e SameSite=None para Azure Static Web Apps.
+✅ Teste 2 PASSOU: Resiliência comprovada! Mesmo sem NODE_ENV=production no Azure, o cookie é emitido com Secure e SameSite=None.
+✅ Teste 3 PASSOU: Ambiente local continua funcionando perfeitamente em HTTP sem quebrar cookies.
+🎉 TODOS OS TESTES DE SEGURANÇA DE COOKIES PASSARAM COM SUCESSO!
+```
+
+---
+
+## 📋 6. Roteiro de Verificação Manual no DevTools (F12)
+
+Após os ajustes, execute o passo a passo a seguir para auditar o comportamento da aplicação no navegador:
 
 ### Passo 1: Limpar o estado anterior
 1. Abra a aplicação no navegador (local ou no Azure).
@@ -266,10 +314,12 @@ Após os ajustes, execute o passo a passo a seguir para auditar o comportamento 
 ### Passo 2: Efetuar Login
 1. Realize o login com uma conta de Aluno ou Professor.
 2. Observe na aba **Network (Rede)** a requisição `POST /login`:
-   - Cabeçalho de resposta: deve conter `Set-Cookie: token=...; Path=/; HttpOnly; ...`
+   - Cabeçalho de resposta: deve conter `Set-Cookie: token=...; Path=/; HttpOnly; SameSite=None; Secure`
 3. Retorne à aba **Application ➔ Storage ➔ Cookies**:
+   - Expanda o domínio da API (`expresst13-...azurewebsites.net`).
    - O cookie `token` estará listado.
    - A coluna **HttpOnly** estará com uma marcação ativa (✔️).
+   - A coluna **Secure** estará com uma marcação ativa (✔️).
    - O valor **NÃO** poderá ser lido por nenhum script no console (`document.cookie` retornará vazio para o token).
 4. Inspecione **Application ➔ Storage ➔ Local Storage**:
    - **Confirmação de Sucesso:** Não existe nenhum item com chave `token` gravado no Local Storage.
@@ -287,4 +337,3 @@ Após os ajustes, execute o passo a passo a seguir para auditar o comportamento 
 2. A aplicação executa `POST /logout`.
 3. O servidor emite um cabeçalho `Set-Cookie` com expiração no passado (`Max-Age=0`).
 4. O navegador deleta o cookie imediatamente e redireciona o usuário para `/login`.
-
