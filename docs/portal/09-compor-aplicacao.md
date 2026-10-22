@@ -139,7 +139,7 @@ createRoot(document.getElementById('root')!).render(
 | `/unauthorized` | Página pública de acesso negado |
 | Qualquer outra | Interface de 404 definida na rota `*` |
 
-Antes de executar, copie os [arquivos auxiliares existentes](REFERENCIA-ARQUIVOS.md), incluindo o favicon referenciado por index.html. Os estilos não importados são preservados nessa referência para permitir a reprodução de todo src/public.
+Antes de executar, copie os [arquivos auxiliares existentes](REFERENCIA-ARQUIVOS.md), incluindo o favicon referenciado por `index.html`. Os estilos não importados são preservados nessa referência para permitir a reprodução de todo `src/public`. Com todos os arquivos criados, execute na raiz do frontend `npx.cmd tsc -b` e `npm.cmd run lint` (0 erros e 1 aviso esperado `react(only-export-components)` em `AuthContext.tsx`).
 
 ## Conferência antes de avançar
 

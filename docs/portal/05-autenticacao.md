@@ -127,7 +127,7 @@ Ao montar, o efeito chama `GET /users` e seleciona o primeiro elemento do array.
 
 O login envia as credenciais para `POST /login`, usa `response.data.user` e ignora o token do JSON. O cookie HttpOnly é gerenciado pelo navegador. A propriedade `token` do Context foi preservada por compatibilidade e sempre vale `null`. `localStorage.removeItem` remove resíduos antigos de `token` e `user`; não persiste a sessão.
 
-O logout chama `POST /logout` e limpa o estado local mesmo se a API falhar. Se a limpeza remota falhar, o cookie pode continuar válido e uma atualização da página pode restaurar a sessão. O endpoint remove o cookie; não há revogação do JWT em lista de bloqueio. O `useAuth` retorna um contexto padrão fora do Provider: não há exceção imediata para detectar esse erro de composição.
+O logout chama `POST /logout` e limpa o estado local mesmo se a API falhar. Se a limpeza remota falhar, o cookie pode continuar válido e uma atualização da página pode restaurar a sessão. O endpoint remove o cookie; não há revogação do JWT em lista de bloqueio. O `useAuth` retorna um contexto padrão fora do Provider: não há exceção imediata para detectar esse erro de composição. Como `AuthProvider` e `useAuth` são exportados no mesmo arquivo, o Oxlint (`npm.cmd run lint`) emite 1 aviso esperado (`react(only-export-components)`) e 0 erros.
 
 ## Conferência antes de avançar
 
