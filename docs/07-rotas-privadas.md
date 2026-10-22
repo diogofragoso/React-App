@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/07-rotas-privadas.md -->
 
 # 07 · Protegendo rotas privadas
 
-[← Anterior](06-recuperando-a-sessao.md) · [Índice](../README.md) · **Etapa 7 de 36** · [Próxima →](08-layout-principal.md)
+[← Anterior](06-recuperando-a-sessao.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 7 de 36** · [Próxima →](08-layout-principal.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 06 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -99,4 +101,4 @@ Se Home estiver sempre vazia, confira Outlet e se a Route filha está dentro do 
 
 Referências: [Rotas aninhadas](https://reactrouter.com/7.18.4/start/declarative/routing) · [Renderização condicional](https://react.dev/learn/conditional-rendering).
 
-[← Anterior](06-recuperando-a-sessao.md) · [Índice](../README.md) · [Próxima →](08-layout-principal.md)
+[← Anterior](06-recuperando-a-sessao.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](08-layout-principal.md)

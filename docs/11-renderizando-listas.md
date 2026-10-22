@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/11-renderizando-listas.md -->
 
 # 11 · Renderizando listas
 
-[← Anterior](10-buscando-clientes.md) · [Índice](../README.md) · **Etapa 11 de 36** · [Próxima →](12-componentes-com-props.md)
+[← Anterior](10-buscando-clientes.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 11 de 36** · [Próxima →](12-componentes-com-props.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 10 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -116,4 +118,4 @@ Se a lista estiver vazia apesar de data conter registros, confira o return do ma
 
 Referências: [Renderizando listas](https://react.dev/learn/rendering-lists).
 
-[← Anterior](10-buscando-clientes.md) · [Índice](../README.md) · [Próxima →](12-componentes-com-props.md)
+[← Anterior](10-buscando-clientes.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](12-componentes-com-props.md)

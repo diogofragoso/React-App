@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/12-componentes-com-props.md -->
 
 # 12 · Componentes reutilizáveis com props
 
-[← Anterior](11-renderizando-listas.md) · [Índice](../README.md) · **Etapa 12 de 36** · [Próxima →](13-detalhes-do-cliente.md)
+[← Anterior](11-renderizando-listas.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 12 de 36** · [Próxima →](13-detalhes-do-cliente.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 11 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -145,4 +147,4 @@ Se TypeScript reclamar que falta cliente, confira `<ClienteCard cliente={cliente
 
 Referências: [Props](https://react.dev/learn/passing-props-to-a-component).
 
-[← Anterior](11-renderizando-listas.md) · [Índice](../README.md) · [Próxima →](13-detalhes-do-cliente.md)
+[← Anterior](11-renderizando-listas.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](13-detalhes-do-cliente.md)

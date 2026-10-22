@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/33-lazy-loading.md -->
 
 # 33 · Lazy loading das páginas
 
-[← Anterior](32-otimizacao.md) · [Índice](../README.md) · **Etapa 33 de 36** · [Próxima →](34-acessibilidade.md)
+[← Anterior](32-otimizacao.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 33 de 36** · [Próxima →](34-acessibilidade.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 32 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -93,4 +95,4 @@ Se lazy reclamar de componente inválido, confira o default adaptado. Se chunks 
 
 Referências: [lazy](https://react.dev/reference/react/lazy) · [Suspense](https://react.dev/reference/react/Suspense).
 
-[← Anterior](32-otimizacao.md) · [Índice](../README.md) · [Próxima →](34-acessibilidade.md)
+[← Anterior](32-otimizacao.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](34-acessibilidade.md)

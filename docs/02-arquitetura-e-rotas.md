@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/02-arquitetura-e-rotas.md -->
 
 # 02 · Páginas e primeiras rotas
 
-[← Anterior](01-criacao-basica-do-projeto.md) · [Índice](../README.md) · **Etapa 2 de 36** · [Próxima →](03-servicos-e-tipagens.md)
+[← Anterior](01-criacao-basica-do-projeto.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 2 de 36** · [Próxima →](03-servicos-e-tipagens.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 01 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -138,4 +140,4 @@ Se useNavigate ou Link reclamarem do Router, confira se o componente está dentr
 
 Referências: [Rotas declarativas no React Router 7](https://reactrouter.com/7.18.4/start/declarative/routing).
 
-[← Anterior](01-criacao-basica-do-projeto.md) · [Índice](../README.md) · [Próxima →](03-servicos-e-tipagens.md)
+[← Anterior](01-criacao-basica-do-projeto.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](03-servicos-e-tipagens.md)

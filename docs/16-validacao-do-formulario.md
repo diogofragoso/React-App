@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/16-validacao-do-formulario.md -->
 
 # 16 · Validando o formulário
 
-[← Anterior](15-estado-dos-formularios.md) · [Índice](../README.md) · **Etapa 16 de 36** · [Próxima →](17-edicao-de-cliente.md)
+[← Anterior](15-estado-dos-formularios.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 16 de 36** · [Próxima →](17-edicao-de-cliente.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 15 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -166,4 +168,4 @@ Se a mensagem nativa aparecer, confira noValidate. Se errors ficar desatualizado
 
 Referências: [Estado derivado](https://react.dev/learn/you-might-not-need-an-effect).
 
-[← Anterior](15-estado-dos-formularios.md) · [Índice](../README.md) · [Próxima →](17-edicao-de-cliente.md)
+[← Anterior](15-estado-dos-formularios.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](17-edicao-de-cliente.md)

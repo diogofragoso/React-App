@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/15-estado-dos-formularios.md -->
 
 # 15 · Evoluindo o estado dos formulários
 
-[← Anterior](14-cadastro-de-cliente.md) · [Índice](../README.md) · **Etapa 15 de 36** · [Próxima →](16-validacao-do-formulario.md)
+[← Anterior](14-cadastro-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 15 de 36** · [Próxima →](16-validacao-do-formulario.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 14 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -99,4 +101,4 @@ Se somente o último campo permanecer preenchido, confira o spread. Se uma propr
 
 Referências: [Atualizando objetos](https://react.dev/learn/updating-objects-in-state).
 
-[← Anterior](14-cadastro-de-cliente.md) · [Índice](../README.md) · [Próxima →](16-validacao-do-formulario.md)
+[← Anterior](14-cadastro-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](16-validacao-do-formulario.md)

@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/09-dashboard.md -->
 
 # 09 · Dashboard do usuário autenticado
 
-[← Anterior](08-layout-principal.md) · [Índice](../README.md) · **Etapa 9 de 36** · [Próxima →](10-buscando-clientes.md)
+[← Anterior](08-layout-principal.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 9 de 36** · [Próxima →](10-buscando-clientes.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 08 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -69,4 +71,4 @@ Se os dados forem undefined, inspecione data.user no login e data[0] em /users. 
 
 Referências: [Não precisar de um efeito](https://react.dev/learn/you-might-not-need-an-effect).
 
-[← Anterior](08-layout-principal.md) · [Índice](../README.md) · [Próxima →](10-buscando-clientes.md)
+[← Anterior](08-layout-principal.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](10-buscando-clientes.md)

@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/13-detalhes-do-cliente.md -->
 
 # 13 · Detalhes de um cliente
 
-[← Anterior](12-componentes-com-props.md) · [Índice](../README.md) · **Etapa 13 de 36** · [Próxima →](14-cadastro-de-cliente.md)
+[← Anterior](12-componentes-com-props.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 13 de 36** · [Próxima →](14-cadastro-de-cliente.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 12 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -153,4 +155,4 @@ Se todos os Links abrirem o mesmo registro, confira cliente.id. Se a página man
 
 Referências: [Parâmetros de URL](https://reactrouter.com/7.18.4/start/declarative/url-values) · [useEffect](https://react.dev/reference/react/useEffect).
 
-[← Anterior](12-componentes-com-props.md) · [Índice](../README.md) · [Próxima →](14-cadastro-de-cliente.md)
+[← Anterior](12-componentes-com-props.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](14-cadastro-de-cliente.md)

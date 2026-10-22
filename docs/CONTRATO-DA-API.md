@@ -1,65 +1,75 @@
-<!-- Documento: docs/CONTRATO-DA-API.md -->
+# Contrato de integração do Portal Acadêmico
 
-# 🔌 Contrato usado pelo frontend
+[Início](../README.md) · [Implementação](../README.md#percurso-do-estudante) · [Cookies e publicação](GUIA-DEPLOY-AZURE-COOKIES.md)
 
-[Índice](../README.md) · [03 · Tipos e HTTP](03-servicos-e-tipagens.md) · [Guia Azure & Cookies](GUIA-DEPLOY-AZURE-COOKIES.md)
+Contrato conferido por leitura de rotas, controllers, services e schemas do projeto vizinho [express.js_API](../../express.js_API/README.md), em 21 de outubro de 2026. Não é resultado de requisições contra banco ou ambiente publicado. As rotas atuais não têm prefixo `/api`.
 
-A referência é a **API construída seguindo a documentação de api_t13**. A aplicação inicial daquele repositório pode estar em outra etapa. Confira as rotas no Swagger da cópia concluída antes de integrar.
-
-| Verbo e caminho | Entrada | Resposta | Acesso |
+| Operação usada pelo portal | Entrada | Sucesso | Uso no React |
 |---|---|---|---|
-| POST /users | name, email, password | 201, usuário público | Cadastro público |
-| POST /login | email, password | 200, token e user; Set-Cookie | Público |
-| GET /users | — | 200, array com a própria conta | Autenticado |
-| GET /users/:id | — | 200, conta | Somente titular |
-| PUT /users/:id | campos editáveis da conta | 200, conta | Somente titular |
-| DELETE /users/:id | — | 204 | Somente titular |
-| POST /logout | — | 204; remoção do cookie | Política de origem da API |
-| GET /clientes | — | 200, Cliente[] | Autenticado |
-| GET /clientes/:id | — | 200, Cliente | Autenticado |
-| POST /clientes | name, email | 201, Cliente | Autenticado |
-| PUT /clientes/:id | name e/ou email | 200, Cliente | Autenticado |
-| DELETE /clientes/:id | — | 204 | Autenticado |
+| `POST /users` | `name?`, `email`, `password`, `userTypeId` | 201, usuário público | Modal de cadastro |
+| `POST /login` | `email`, `password` | 200, `{ token, user }` e `Set-Cookie` | `AuthContext.login` |
+| `GET /users` | Cookie válido | 200, array contendo somente a própria conta | Restauração de sessão, elemento `[0]` |
+| `POST /logout` | Sem corpo obrigatório | 204, limpeza do cookie | `AuthContext.logout` |
 
-Clientes são contatos compartilhados entre contas autenticadas. Não há campo proprietário nem política de administrador nesta trilha.
+Cadastro não autentica automaticamente. `userTypeId` aceita somente 2 ou 3, com padrão 2. O nome é opcional; quando informado deve ter de 2 a 100 caracteres após trim. O e-mail é normalizado para minúsculas, validado e limitado a 254 caracteres. A senha deve ter ao menos oito caracteres e até 72 bytes UTF-8. O schema rejeita campos extras.
 
-## Formatos de dados
+Exemplo de cadastro:
+
+```json
+{
+  "name": "Maria Silva",
+  "email": "maria@example.com",
+  "password": "senha-de-estudo",
+  "userTypeId": 2
+}
+```
+
+Exemplo de usuário público; IDs e datas são ilustrativos:
 
 ```json
 {
   "id": 1,
-  "name": "Conta de estudo",
-  "email": "estudo@example.com",
-  "createdAt": "2026-01-01T00:00:00.000Z"
+  "name": "Maria Silva",
+  "email": "maria@example.com",
+  "createdAt": "2026-10-21T12:00:00.000Z",
+  "userTypeId": 2,
+  "role": "aluno"
 }
 ```
 
-User e Cliente têm esses campos públicos. Os nomes representam recursos diferentes: cliente não é uma conta e não recebe senha. Datas são strings JSON. ids são inteiros positivos até 2147483647.
+`name` pode ser `null` quando omitido, embora o tipo atual do frontend declare `string`. `toPublicUser` mapeia ID 3 para `professor`, ID 4 para `admin` e todos os demais para `aluno`. O frontend usa `role`, sem derivá-lo de `userTypeId`. Admin não possui painel nem permissão especial nas rotas React.
 
-A entrada de cliente contém somente name e email. A API normaliza campos e rejeita campos extras, nome fora do limite e e-mail inválido. E-mail duplicado retorna 409.
+O modal pressupõe `2 = aluno` e `3 = professor`. O script `src/scripts/init-rbac.ts` da API ainda define `1 = ALUNO` e `2 = ADMIN`, portanto não prepara o catálogo deste portal. Confira o catálogo real e alinhe os dados antes do cadastro; não presuma compatibilidade entre esse script e o service.
 
-## Erros e operações
+## Sessão e permissões
 
-| Status | Interpretação na interface |
+O cookie `token` tem `httpOnly: true`, `path: '/'` e duração de 15 minutos. O JWT também expira em 15 minutos, não tem refresh token e contém ID de usuário; o perfil é montado a partir da conta no servidor. O middleware confirma que a conta existe.
+
+Em `getCookieOptions`, HTTPS, `x-forwarded-proto: https`, `NODE_ENV=production` ou origem sem `localhost`/`127.0.0.1` ativam `secure: true` e `sameSite: 'none'`. Em HTTP local sem essas condições, usa `secure: false` e `sameSite: 'lax'`. Essa é a heurística implementada, não um teste geral de igualdade de sites. Linked backend não altera automaticamente essa função para Lax.
+
+O Axios usa `withCredentials: true`, sem garantir que o navegador aceite o cookie. O CORS habilita credenciais e reflete origens aceitas por `isOriginAllowed`: as configuradas e subdomínios HTTPS de `azurestaticapps.net` e `azurewebsites.net`. Escritas autenticadas por cookie exigem Origin permitido. A API também aceita Bearer, mas o portal usa somente cookie.
+
+HttpOnly impede leitura do cookie por JavaScript; o JWT continua presente no JSON de login, embora o aplicativo o ignore. HttpOnly não impede scripts injetados de fazer requisições autenticadas. Logout apaga o cookie com as mesmas opções; não revoga cópias do JWT emitido.
+
+`ProtectedRoute` separa as telas por perfil. O backend verifica autenticação e titularidade nas operações de conta; não há endpoints acadêmicos para disciplinas ou notas. `/unauthorized` é uma página React, sem emissão de status HTTP 403 pelo componente.
+
+## Erros
+
+| Status | Significado |
 |---|---|
-| 400 | Entrada inválida; erros de validação ou formato |
-| 401 | Credencial ou sessão inválida |
-| 403 | Operação/origem não permitida; não equivale a logout |
-| 404 | Recurso ou rota inexistente |
-| 409 | Conflito, como e-mail já cadastrado |
-| 429 | Limite de tentativas; aguardar |
-| 500 | Falha interna; permitir diagnóstico e nova tentativa |
+| 400 | JSON ou campos inválidos; `{ error }` ou `{ errors: [{ path, message }] }` |
+| 401 | Credenciais, token ou sessão inválidos |
+| 403 | Origem ou operação sobre conta alheia não permitida |
+| 404 | Conta ou rota inexistente |
+| 409 | E-mail duplicado |
+| 413 | Corpo da requisição muito grande |
+| 429 | Limite de requisições/tentativas |
+| 500 | Erro interno |
 
-O corpo usa error para mensagem geral ou errors com mensagens de validação. Não presuma response.data.message. DELETE e logout não devolvem JSON em 204.
+Login e cadastro também tentam ler `message` por compatibilidade, mas a API local usa `error` ou `errors`. Respostas 204 não têm JSON. O interceptor React somente avisa no console ao receber 401; não expira o Context automaticamente.
 
-Não há PATCH nesta API; use PUT conforme seu contrato. Não há busca/paginação no servidor; query parameters não criam essas funcionalidades sozinhos.
+## Outras operações da API
 
-## Sessão no navegador
+`GET`, `PUT` e `DELETE /users/:id` exigem titularidade. Existem ainda `GET`/`POST /clientes` e `GET`/`PUT`/`DELETE /clientes/:id` para contas autenticadas. O portal não chama essas rotas. A [trilha complementar](TRILHA-CLIENTES.md) as utiliza em outra aplicação; não há PATCH nem paginação do servidor.
 
-O cookie token é HttpOnly, path=/ e Secure em produção. Em desenvolvimento local usa SameSite=Lax; em produção cross-domain na nuvem (Azure) adota SameSite=None ou arquitetura de Linked Backend (SameSite=Lax). A autenticação dura 15 minutos no guia. withCredentials habilita o uso de credenciais entre origens, mas armazenamento e envio também dependem das políticas do navegador e do servidor. Para instruções completas sobre deploy na nuvem e isolamento seguro sem localStorage, consulte o [Guia de Deploy no Azure e Cookies HttpOnly](GUIA-DEPLOY-AZURE-COOKIES.md).
-
-A origem de desenvolvimento é http://localhost:5173. Mantenha esse host e porta alinhados com a configuração da API. Escritas por cookie exigem origem permitida. O frontend não deve tentar ler o token do cookie nem armazená-lo em localStorage.
-
-O login também devolve token em JSON; a aplicação ignora esse campo e confia exclusivamente no cookie HttpOnly. Logout limpa o cookie via endpoint da API. Não existe refresh token neste contrato.
-
-Referências locais: [autenticação](../../api_t13/docs/05-autenticacao-com-jwt.md), [origens e limites](../../api_t13/docs/07-seguranca-e-rate-limit.md), [clientes](../../api_t13/docs/10-automacao-e-geracao-de-codigo.md).
+Fontes locais: [rotas](../../express.js_API/src/routes/user.route.ts), [schema](../../express.js_API/src/schemas/user.schema.ts), [usuário público](../../express.js_API/src/services/user.service.ts), [cookies](../../express.js_API/src/controllers/auth.controller.ts), [autenticação](../../express.js_API/src/middlewares/auth.middleware.ts) e [origens](../../express.js_API/src/config/origins.ts).

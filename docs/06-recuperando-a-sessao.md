@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/06-recuperando-a-sessao.md -->
 
 # 06 · Recuperando a sessão ao abrir a aplicação
 
-[← Anterior](05-contexto-de-autenticacao.md) · [Índice](../README.md) · **Etapa 6 de 36** · [Próxima →](07-rotas-privadas.md)
+[← Anterior](05-contexto-de-autenticacao.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 6 de 36** · [Próxima →](07-rotas-privadas.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 05 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -121,4 +123,4 @@ Se o cookie não acompanhar /users, confira Application → Cookies, CORS, withC
 
 Referências: [Sincronização com efeitos](https://react.dev/learn/synchronizing-with-effects) · [useRef](https://react.dev/reference/react/useRef) · [Cancelamento no Axios](https://axios-http.com/docs/cancellation).
 
-[← Anterior](05-contexto-de-autenticacao.md) · [Índice](../README.md) · [Próxima →](07-rotas-privadas.md)
+[← Anterior](05-contexto-de-autenticacao.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](07-rotas-privadas.md)

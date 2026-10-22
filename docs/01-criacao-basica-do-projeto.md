@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/01-criacao-basica-do-projeto.md -->
 
 # 01 · Criação básica do projeto
 
-[Índice](../README.md) · **Etapa 1 de 36** · [Próxima →](02-arquitetura-e-rotas.md)
+[Índice](TRILHA-CLIENTES.md) · **Etapa 1 de 36** · [Próxima →](02-arquitetura-e-rotas.md)
 
 **Ponto de partida:** pasta nova e vazia ou uma cópia de estudo; nunca inicialize o Vite sobre arquivos existentes. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -30,7 +32,7 @@ npm install --save-exact react@19.3.0 react-dom@19.3.0 bootstrap@5.3.8 react-boo
 npm install --save-dev --save-exact vite@8.3.1 typescript@6.0.3 @vitejs/plugin-react@6.1.1 oxlint@1.86.0 @types/node@24.19.0 @types/react@19.3.0 @types/react-dom@19.3.0
 ```
 
-O gerador cria arquivos de configuração; preserve-os. Versione o lockfile. Para retomar uma cópia existente com lockfile, execute `npm ci` nela e continue no capítulo correspondente. O nome `frontend-estudo` evita sobrescrever `react-project`.
+O gerador cria arquivos de configuração; preserve-os. Versione o lockfile. Para retomar uma cópia existente com lockfile, execute `npm ci` nela e continue no capítulo correspondente. O nome `frontend-estudo` evita sobrescrever `frontend-estudo`.
 
 ## 2. Entender a entrada da aplicação
 
@@ -120,4 +122,4 @@ Se faltar estilo, confira o import do Bootstrap em main.tsx. Se #root não exist
 
 Referências: [Introdução ao React](https://react.dev/learn) · [StrictMode](https://react.dev/reference/react/StrictMode) · [Vite](https://vite.dev/guide/).
 
-[Índice](../README.md) · [Próxima →](02-arquitetura-e-rotas.md)
+[Índice](TRILHA-CLIENTES.md) · [Próxima →](02-arquitetura-e-rotas.md)

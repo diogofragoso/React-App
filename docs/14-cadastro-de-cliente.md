@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/14-cadastro-de-cliente.md -->
 
 # 14 · Cadastrando um cliente
 
-[← Anterior](13-detalhes-do-cliente.md) · [Índice](../README.md) · **Etapa 14 de 36** · [Próxima →](15-estado-dos-formularios.md)
+[← Anterior](13-detalhes-do-cliente.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 14 de 36** · [Próxima →](15-estado-dos-formularios.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 13 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -214,4 +216,4 @@ Se /novo virar identificador inválido, confira a Route estática. Se a API reje
 
 Referências: [Aprender React](https://react.dev/learn).
 
-[← Anterior](13-detalhes-do-cliente.md) · [Índice](../README.md) · [Próxima →](15-estado-dos-formularios.md)
+[← Anterior](13-detalhes-do-cliente.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](15-estado-dos-formularios.md)

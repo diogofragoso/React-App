@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/27-perfis-e-permissoes.md -->
 
 # 27 · Perfis e permissões
 
-[← Anterior](26-logout.md) · [Índice](../README.md) · **Etapa 27 de 36** · [Próxima →](28-erros-http-globais.md)
+[← Anterior](26-logout.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 27 de 36** · [Próxima →](28-erros-http-globais.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 26 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -18,10 +20,10 @@ Estudante distingue autenticação, autorização da API e visibilidade na inter
 |---|---|
 | Conta User | Somente o titular pode consultar, alterar e excluir |
 | Contato Cliente | Compartilhado entre usuários autenticados |
-| Administrador | Não implementado |
-| role em User | Não faz parte do JSON |
+| Administrador | Sem permissões administrativas nas operações desta trilha |
+| role em User | API atual retorna o campo; o tipo simplificado desta trilha não o utiliza |
 
-Não acrescente role opcional ao tipo para supor uma permissão que o servidor não fornece. Nesta etapa a aplicação continua com a política real. O exemplo abaixo é **isolado, não conectado à autenticação**, para exercitar condicionais e props.
+O portal atual usa os perfis `aluno` e `professor` recebidos da API; sua implementação está no roteiro principal. Esta trilha de clientes preserva uma demonstração separada de `admin` e `user`, que não corresponde aos perfis dos painéis. Receber `role: 'admin'` da API não implica uma permissão administrativa nestes endpoints. O exemplo abaixo é **isolado, não conectado à autenticação**, para exercitar condicionais e props.
 
 **Arquivo: `src/examples/PermissionsDemo.tsx`**
 
@@ -51,7 +53,7 @@ export function PermissionsDemo({ role, children }: PermissionsDemoProps) {
 
 Em uma página de estudo temporária, importe PermissionsDemo e passe role="admin" e role="user" separadamente. role aqui é uma prop explícita de demonstração, não o user do Context. Compare ternário e &&. Remova a montagem experimental ao concluir.
 
-Ocultar um botão não impede que alguém envie HTTP manualmente. Para implementar perfis reais será necessário:
+Ocultar um botão não impede que alguém envie HTTP manualmente. Para ampliar a autorização de operações no servidor será necessário:
 
 1. Definir quais contas recebem cada papel e quem pode alterá-lo.
 2. Implementar persistência, validação e autorização na API.
@@ -59,10 +61,10 @@ Ocultar um botão não impede que alguém envie HTTP manualmente. Para implement
 4. Atualizar o contrato User e decidir quais ações a interface mostra.
 5. Testar 403 no servidor para quem não tem permissão.
 
-Não permita que o cliente escolha “admin” livremente em POST /users. Esta é uma ampliação do backend, fora do contrato atual do guia.
+Não permita que o cliente escolha “admin” livremente em POST /users. O schema atual aceita somente os IDs 2 e 3. Uma política de administração é uma ampliação do backend, fora das operações desta trilha.
 ## Conferência antes de avançar
 
-- [ ] A aplicação não inventa administrador nem usa role inexistente.
+- [ ] A aplicação não presume privilégios administrativos a partir da demonstração isolada.
 - [ ] Demonstração fica identificada e isolada.
 - [ ] Estudante explica por que a API precisa validar cada ação.
 
@@ -74,6 +76,6 @@ Monte uma matriz de permissões para um produto futuro antes de escrever código
 
 Se aparecer 403 ao consultar outra conta, a API está aplicando a política correta. Não altere o frontend para contornar a regra.
 
-Referências: [Política de acesso da API](../../api_t13/README.md) · [Condicionais React](https://react.dev/learn/conditional-rendering).
+Referências: [Política de acesso da API](../../express.js_API/README.md) · [Condicionais React](https://react.dev/learn/conditional-rendering).
 
-[← Anterior](26-logout.md) · [Índice](../README.md) · [Próxima →](28-erros-http-globais.md)
+[← Anterior](26-logout.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](28-erros-http-globais.md)

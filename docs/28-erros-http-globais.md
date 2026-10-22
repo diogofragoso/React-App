@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/28-erros-http-globais.md -->
 
 # 28 · Tratamento global de erros HTTP
 
-[← Anterior](27-perfis-e-permissoes.md) · [Índice](../README.md) · **Etapa 28 de 36** · [Próxima →](29-variaveis-de-ambiente.md)
+[← Anterior](27-perfis-e-permissoes.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 28 de 36** · [Próxima →](29-variaveis-de-ambiente.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 27 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -524,4 +526,4 @@ Se houver loop de redirecionamento, confira exceção de /login e a recuperaçã
 
 Referências: [Interceptors do Axios](https://axios-http.com/docs/interceptors).
 
-[← Anterior](27-perfis-e-permissoes.md) · [Índice](../README.md) · [Próxima →](29-variaveis-de-ambiente.md)
+[← Anterior](27-perfis-e-permissoes.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](29-variaveis-de-ambiente.md)

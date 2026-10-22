@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/05-contexto-de-autenticacao.md -->
 
 # 05 · Compartilhando autenticação com Context
 
-[← Anterior](04-tela-de-login.md) · [Índice](../README.md) · **Etapa 5 de 36** · [Próxima →](06-recuperando-a-sessao.md)
+[← Anterior](04-tela-de-login.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 5 de 36** · [Próxima →](06-recuperando-a-sessao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 04 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -207,4 +209,4 @@ Se user nunca mudar, confira se Login chama signIn, se data.user corresponde ao 
 
 Referências: [Context](https://react.dev/learn/passing-data-deeply-with-context) · [useContext](https://react.dev/reference/react/useContext).
 
-[← Anterior](04-tela-de-login.md) · [Índice](../README.md) · [Próxima →](06-recuperando-a-sessao.md)
+[← Anterior](04-tela-de-login.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](06-recuperando-a-sessao.md)

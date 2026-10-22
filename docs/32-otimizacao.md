@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/32-otimizacao.md -->
 
 # 32 · Otimização quando necessária
 
-[← Anterior](31-renderizacoes.md) · [Índice](../README.md) · **Etapa 32 de 36** · [Próxima →](33-lazy-loading.md)
+[← Anterior](31-renderizacoes.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 32 de 36** · [Próxima →](33-lazy-loading.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 31 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -119,4 +121,4 @@ Se o resultado ficar desatualizado, revise dependências. Não use array vazio p
 
 Referências: [memo](https://react.dev/reference/react/memo) · [useMemo](https://react.dev/reference/react/useMemo) · [useCallback](https://react.dev/reference/react/useCallback).
 
-[← Anterior](31-renderizacoes.md) · [Índice](../README.md) · [Próxima →](33-lazy-loading.md)
+[← Anterior](31-renderizacoes.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](33-lazy-loading.md)

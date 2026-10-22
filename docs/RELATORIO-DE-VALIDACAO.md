@@ -1,66 +1,55 @@
-<!-- Documento: docs/RELATORIO-DE-VALIDACAO.md -->
+# Validação da documentação do Portal Acadêmico
 
-# ✅ Validação da documentação React
+[Início](../README.md) · [Implementação](../README.md#percurso-do-estudante) · [Contrato](CONTRATO-DA-API.md)
 
-[Índice](../README.md) · [Contrato](CONTRATO-DA-API.md)
+Revisão de 21 de outubro de 2026. O código do React-App e o contrato lido em express.js_API são a referência. A trilha antiga de 36 capítulos implementa clientes, enquanto `src` implementa o portal acadêmico; ela foi identificada como material complementar em seu índice e em cada capítulo.
 
-Revisão realizada em **2 de outubro de 2026**, na trilha de 36 capítulos. O escopo é a documentação: os exemplos foram reconstruídos em uma área isolada, sem aplicar as evoluções ao src da aplicação existente.
+## Escopo
 
-## Resultado verificado
+O percurso do estudante está organizado em 11 capítulos em `docs/portal`, com índice no README, objetivos, pré-requisitos, navegação e conferência. Inclui dependências, lockfile, configurações TypeScript/Vite/Oxlint, ambientes, tipos, Axios, Context, proteção de rotas, todas as páginas, entrada, arquivos auxiliares e configuração de publicação. Os exemplos são cópias completas do código atual. As explicações registram os comportamentos e limites observados por leitura de código. As ferramentas e o script auxiliar ficam no [guia de manutenção](MANUTENCAO.md); não são capítulos obrigatórios do percurso.
 
-| Verificação | Resultado |
+`node docs/scripts/sincronizar-portal.cjs` compara os exemplos com os arquivos de origem, exige cobertura de todos os arquivos de `src` e `public` e verifica links locais e fechamento de blocos Markdown. A opção `--write` sincroniza os blocos, mas a explicação deve ser revisada manualmente quando o código mudar.
+
+A reorganização preservou os 32 exemplos e os arquivos do aplicativo. A reconstrução e a comparação dos arquivos foram repetidas usando os capítulos; os resultados de build abaixo foram obtidos na revisão anterior, sobre o mesmo código. `IMPLEMENTACAO.md` agora apenas encaminha links anteriores ao índice principal.
+
+## Verificações desta revisão
+
+Ambiente: Windows/PowerShell, Node 24.11.1 e npm 11.6.2, usando dependências já instaladas e o lockfile existente.
+
+| Verificação executada | Resultado |
 |---|---|
-| Criação do template | create-vite@9.2.1 gerou React + TypeScript sem interação |
-| Exemplos cumulativos | Os 36 capítulos passaram na conferência TypeScript |
-| Tipos e imports | Conferência com strict, noUnusedLocals e noUnusedParameters |
-| Testes de interface | 15 testes aprovados, em quatro arquivos |
-| Build final | tsc -b e Vite concluíram; chunks de cinco páginas foram gerados |
-| Documentação | Links relativos e fechamento de blocos conferidos pelo script |
+| `node docs/scripts/sincronizar-portal.cjs` | 32 arquivos conferidos, cobertura de src/public e links locais aprovados |
+| `npm.cmd run lint` | Sem erros; um aviso existente de `react/only-export-components` em AuthContext |
+| `node scripts/test-storage-security.mjs` | Três verificações aprovadas; inspeção textual e simulação, sem renderização React |
+| `npm.cmd run build` | TypeScript e Vite aprovados; 395 módulos transformados |
+| Reconstrução por `--reconstruir`, seguida de `npm.cmd run build` na pasta gerada | Build aprovado usando exclusivamente os arquivos extraídos dos blocos e o lockfile de referência |
+| `git diff --check` | Sem problemas de whitespace nos arquivos rastreados |
 
-A validação TypeScript recompõe os arquivos completos identificados em cada capítulo. Não utiliza o src existente como atalho para fornecer componentes que ainda não foram ensinados. O host do compilador bloqueia arquivos de etapas posteriores na resolução local.
+A reconstrução usa uma pasta nova em `node_modules/.tmp/portal-documentado-*`, ignorada pelo Git, e resolve as dependências já instaladas nas pastas ancestrais. Não copia `src` diretamente. Os blocos são comparados após normalizar CRLF/LF e remover espaços/quebras finais do arquivo; diferenças de código são rejeitadas. Os bundles JS e CSS da reconstrução e da aplicação têm o mesmo hash. O relatório [portal-atual.json](evidencias/portal-atual.json) registra os arquivos e hashes desta execução.
 
-## Ambiente e versões
+O primeiro build no sandbox encontrou `spawn EPERM` ao carregar a configuração Vite no Windows. A execução autorizada fora do sandbox concluiu tanto o build da aplicação quanto o da reconstrução. Isso foi uma restrição de execução, não uma falha de TypeScript.
 
-| Ferramenta | Versão usada |
-|---|---|
-| Node dos testes e build | 24.15.0, runtime isolado |
-| Node disponível inicialmente | 24.11.1 |
-| npm | 11.12.1 |
-| React e React DOM | 19.3.0 |
-| TypeScript | 6.0.3 |
-| Vite / plugin React | 8.3.1 / 6.1.1 |
-| React Router DOM | 7.18.4 |
-| Axios | 1.20.0 |
-| Bootstrap / React Bootstrap | 5.3.8 / 2.10.10 |
-| Vitest / jsdom | 5.0.3 / 30.1.1 |
-| Testing Library React | 16.3.3 |
-| user-event / jest-dom | 14.6.7 / 7.0.1 |
+Para repetir a reconstrução na raiz do repositório:
 
-A primeira execução dos testes também passou com Node 24.11.1, mas jsdom e dependências declararam requisito de Node 24.15.0. A aprovação de testes e build deste relatório usa o runtime compatível 24.15.0. A instalação global do usuário não foi atualizada.
-
-## Evidências
-
-- [Conferência por capítulo e links](evidencias/validacao-estatica.json).
-- [Resultado dos 15 testes](evidencias/testes.json).
-- [Ambiente e versões](evidencias/ambiente.json).
-- [Build e hashes dos arquivos reconstruídos](evidencias/build.json).
-
-Os testes verificam formulário inválido e foco, envio normalizado, bloqueio durante envio, ids únicos, ações do modal, recuperação de sessão, 401, erro de rede com tentativa, login, logout, resposta antiga após login e funções puras.
-
-## Repetir a conferência
-
-Na raiz de react-project, com dependências instaladas:
-
-```bat
-node docs\scripts\validar-guia.cjs
+```powershell
+node docs/scripts/sincronizar-portal.cjs --reconstruir
 ```
 
-O verificador grava a reconstrução em docs/.validacao/projeto e a evidência em docs/evidencias/validacao-estatica.json. docs/.validacao é ignorada pelo Git.
+Entre na pasta exata exibida pelo comando e execute `npm.cmd run build`. Isso não instala dependências novas nem comprova uma instalação limpa por rede. As evidências antigas não são utilizadas como comprovação do portal.
 
-Para reproduzir a aplicação completa em uma pasta nova, siga o capítulo 1, copie os arquivos em ordem e use os comandos dos capítulos 35 e 36. Preserve os arquivos de configuração gerados pelo Vite e o lockfile; configure VITE_API_URL no capítulo 29.
+## Limites encontrados no código
 
-## Limites práticos
+- Cadastro: `finally` limpa `loading` em vez de `regLoading`, podendo manter o formulário bloqueado após erro.
+- Tipos: `User.name` é string no frontend, mas a API pode retornar null.
+- Sessão: 401 global apenas gera aviso; falha de rede na restauração resulta em usuário nulo. Não existe renovação automática.
+- Logout: limpa o estado local mesmo com falha remota; cookie ainda válido pode restaurar sessão depois. Não revoga JWT já emitido.
+- Catálogo da API: o modal e o service usam aluno 2/professor 3; `init-rbac.ts` ainda descreve aluno 1/admin 2.
+- Conteúdo acadêmico é estático e controle de rotas não equivale a autorização de recursos no servidor.
 
-Esta revisão não executou uma sessão de navegador contra a API real, não alterou banco e não publicou o frontend. Os testes de autenticação simulam o service. Não comprovam CORS, armazenamento do cookie HttpOnly, autorização do servidor, navegação direta na hospedagem ou acessibilidade com leitor de tela.
+Não foram alterados os arquivos do aplicativo nem o backend para corrigir esses pontos: o objetivo desta revisão é documentar fielmente sua implementação. O roteiro explica o impacto e a verificação necessária.
 
-Essas verificações estão nas listas dos capítulos e no roteiro final do [capítulo 36](36-build-e-publicacao.md). A conclusão desta revisão é: o material possui exemplos cumulativos tipados, testes de comportamento aprovados e build final gerado no ambiente registrado.
+Não houve instalação limpa por rede, cadastro real, alteração de banco, sessão de navegador ou deploy. O build e as inspeções não comprovam CORS, aceitação de cookies, catálogo do banco, acessibilidade ou disponibilidade em produção.
+
+## Evidências anteriores
+
+O [relatório histórico](RELATORIO-HISTORICO-CLIENTES.md) e os JSON antigos em `docs/evidencias` são da trilha de clientes em 2 de outubro de 2026. Seus 15 testes e build reconstruído não se aplicam às telas atuais. `docs/scripts/validar-guia.cjs` continua disponível para essa trilha complementar; não substitui o verificador do portal.

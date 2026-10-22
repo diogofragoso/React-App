@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/18-exclusao-de-cliente.md -->
 
 # 18 · Excluindo um cliente
 
-[← Anterior](17-edicao-de-cliente.md) · [Índice](../README.md) · **Etapa 18 de 36** · [Próxima →](19-modal-de-confirmacao.md)
+[← Anterior](17-edicao-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 18 de 36** · [Próxima →](19-modal-de-confirmacao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 17 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -164,4 +166,4 @@ Pare a API antes de clicar Excluir em um contato de estudo. Verifique que ele pe
 
 Referências: [Atualizando arrays](https://react.dev/learn/updating-arrays-in-state).
 
-[← Anterior](17-edicao-de-cliente.md) · [Índice](../README.md) · [Próxima →](19-modal-de-confirmacao.md)
+[← Anterior](17-edicao-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](19-modal-de-confirmacao.md)

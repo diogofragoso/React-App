@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/22-ordenacao-e-paginacao.md -->
 
 # 22 · Ordenação e paginação
 
-[← Anterior](21-pesquisa-e-filtros.md) · [Índice](../README.md) · **Etapa 22 de 36** · [Próxima →](23-custom-hooks.md)
+[← Anterior](21-pesquisa-e-filtros.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 22 de 36** · [Próxima →](23-custom-hooks.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 21 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -162,4 +164,4 @@ Se a pesquisa só encontrar itens da página atual, confira a ordem filter → s
 
 Referências: [Atualização de arrays](https://react.dev/learn/updating-arrays-in-state) · [Parâmetros de URL](https://reactrouter.com/7.18.4/start/declarative/url-values).
 
-[← Anterior](21-pesquisa-e-filtros.md) · [Índice](../README.md) · [Próxima →](23-custom-hooks.md)
+[← Anterior](21-pesquisa-e-filtros.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](23-custom-hooks.md)

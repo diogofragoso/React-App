@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/21-pesquisa-e-filtros.md -->
 
 # 21 · Pesquisa e filtros
 
-[← Anterior](20-estados-da-interface.md) · [Índice](../README.md) · **Etapa 21 de 36** · [Próxima →](22-ordenacao-e-paginacao.md)
+[← Anterior](20-estados-da-interface.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 21 de 36** · [Próxima →](22-ordenacao-e-paginacao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 20 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -142,4 +144,4 @@ Se remover a busca não restaurar os registros, provavelmente o filtro substitui
 
 Referências: [Escolhendo a estrutura do estado](https://react.dev/learn/choosing-the-state-structure).
 
-[← Anterior](20-estados-da-interface.md) · [Índice](../README.md) · [Próxima →](22-ordenacao-e-paginacao.md)
+[← Anterior](20-estados-da-interface.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](22-ordenacao-e-paginacao.md)

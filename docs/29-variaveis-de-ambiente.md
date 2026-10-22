@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/29-variaveis-de-ambiente.md -->
 
 # 29 · Variáveis de ambiente
 
-[← Anterior](28-erros-http-globais.md) · [Índice](../README.md) · **Etapa 29 de 36** · [Próxima →](30-revisao-da-arquitetura.md)
+[← Anterior](28-erros-http-globais.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 29 de 36** · [Próxima →](30-revisao-da-arquitetura.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 28 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -98,4 +100,4 @@ Se import.meta.env retornar undefined, confira prefixo VITE_, raiz do arquivo e 
 
 Referências: [Ambiente e modos no Vite](https://vite.dev/guide/env-and-mode).
 
-[← Anterior](28-erros-http-globais.md) · [Índice](../README.md) · [Próxima →](30-revisao-da-arquitetura.md)
+[← Anterior](28-erros-http-globais.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](30-revisao-da-arquitetura.md)

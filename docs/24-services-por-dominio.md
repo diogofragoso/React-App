@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/24-services-por-dominio.md -->
 
 # 24 · Services por domínio
 
-[← Anterior](23-custom-hooks.md) · [Índice](../README.md) · **Etapa 24 de 36** · [Próxima →](25-feedback-com-toasts.md)
+[← Anterior](23-custom-hooks.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 24 de 36** · [Próxima →](25-feedback-com-toasts.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 23 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -346,4 +348,4 @@ Se houver acesso data.user no Provider após a migração, confira que signIn ag
 
 Referências: [Axios](https://axios-http.com/docs/intro) · [Separação de estado e lógica](https://react.dev/learn/reusing-logic-with-custom-hooks).
 
-[← Anterior](23-custom-hooks.md) · [Índice](../README.md) · [Próxima →](25-feedback-com-toasts.md)
+[← Anterior](23-custom-hooks.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](25-feedback-com-toasts.md)

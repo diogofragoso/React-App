@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/30-revisao-da-arquitetura.md -->
 
 # 30 · Revisão da arquitetura
 
-[← Anterior](29-variaveis-de-ambiente.md) · [Índice](../README.md) · **Etapa 30 de 36** · [Próxima →](31-renderizacoes.md)
+[← Anterior](29-variaveis-de-ambiente.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 30 de 36** · [Próxima →](31-renderizacoes.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 29 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -82,4 +84,4 @@ Imports quebrados depois de um exercício de mudança devem ser corrigidos pelo 
 
 Referências: [Construindo a interface por componentes](https://react.dev/learn/thinking-in-react).
 
-[← Anterior](29-variaveis-de-ambiente.md) · [Índice](../README.md) · [Próxima →](31-renderizacoes.md)
+[← Anterior](29-variaveis-de-ambiente.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](31-renderizacoes.md)

@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/03-servicos-e-tipagens.md -->
 
 # 03 · Comunicação com a API e tipagens
 
-[← Anterior](02-arquitetura-e-rotas.md) · [Índice](../README.md) · **Etapa 3 de 36** · [Próxima →](04-tela-de-login.md)
+[← Anterior](02-arquitetura-e-rotas.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 3 de 36** · [Próxima →](04-tela-de-login.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 02 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -14,7 +16,7 @@ Cliente HTTP configurado e tipos que correspondem à API construída pelo guia.
 
 ## 1. Confirmar o contrato antes de escrever telas
 
-Use a API **concluída pelo guia de api_t13**, e não presuma que o `src` atual daquele repositório corresponde à documentação. Confira Swagger em `http://localhost:3000/api-docs`.
+Use a API **concluída pelo guia da API Express**, e não presuma que o `src` atual daquele repositório corresponde à documentação. Confira Swagger em `http://localhost:3000/api-docs`.
 
 | Operação | Resposta relevante |
 |---|---|
@@ -28,7 +30,7 @@ Use a API **concluída pelo guia de api_t13**, e não presuma que o `src` atual 
 | PUT /clientes/:id | 200, cliente; aceita campos editáveis |
 | DELETE /clientes/:id | 204, sem corpo |
 
-`/clientes` depende do capítulo 10 da API. Não há `/me`, `/usuarios/me`, `/auth/login`, role ou paginação no servidor. As falhas usam `{ error }` ou `{ errors: [...] }`, e não `{ message }` na raiz.
+`/clientes` depende do capítulo 10 da API. Não há `/me`, `/usuarios/me`, `/auth/login` ou paginação no servidor. A API atual também retorna `role` e `userTypeId`; esta trilha usa somente um subconjunto dos campos do usuário. Para usar esses perfis no portal, siga o roteiro principal. As falhas usam `{ error }` ou `{ errors: [...] }`, e não `{ message }` na raiz.
 
 ## 2. Criar a instância HTTP
 
@@ -114,6 +116,6 @@ No Network do navegador, identifique método, URL, status e corpo de uma requisi
 
 404 indica rota incorreta; 401 indica autenticação ausente ou inválida. Erro de CORS pode esconder a resposta do JavaScript; confira a origem no servidor e o Network. Não use wildcard com credenciais.
 
-Referências: [Configuração do Axios](https://axios-http.com/docs/req_config) · [Guia de autenticação da API](../../api_t13/docs/05-autenticacao-com-jwt.md) · [Guia de Deploy no Azure e Cookies](GUIA-DEPLOY-AZURE-COOKIES.md).
+Referências: [Configuração do Axios](https://axios-http.com/docs/req_config) · [Guia de autenticação da API](../../express.js_API/docs/05-autenticacao-com-jwt.md) · [Guia de Deploy no Azure e Cookies](GUIA-DEPLOY-AZURE-COOKIES.md).
 
-[← Anterior](02-arquitetura-e-rotas.md) · [Índice](../README.md) · [Próxima →](04-tela-de-login.md)
+[← Anterior](02-arquitetura-e-rotas.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](04-tela-de-login.md)

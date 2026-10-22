@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/17-edicao-de-cliente.md -->
 
 # 17 · Editando um cliente
 
-[← Anterior](16-validacao-do-formulario.md) · [Índice](../README.md) · **Etapa 17 de 36** · [Próxima →](18-exclusao-de-cliente.md)
+[← Anterior](16-validacao-do-formulario.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 17 de 36** · [Próxima →](18-exclusao-de-cliente.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 16 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -172,4 +174,4 @@ Campos vazios após GET indicam montagem prematura. Confira cliente && e initial
 
 Referências: [Preservar e reiniciar state](https://react.dev/learn/preserving-and-resetting-state).
 
-[← Anterior](16-validacao-do-formulario.md) · [Índice](../README.md) · [Próxima →](18-exclusao-de-cliente.md)
+[← Anterior](16-validacao-do-formulario.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](18-exclusao-de-cliente.md)

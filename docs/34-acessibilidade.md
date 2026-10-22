@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/34-acessibilidade.md -->
 
 # 34 · Acessibilidade
 
-[← Anterior](33-lazy-loading.md) · [Índice](../README.md) · **Etapa 34 de 36** · [Próxima →](35-testes-react.md)
+[← Anterior](33-lazy-loading.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 34 de 36** · [Próxima →](35-testes-react.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 33 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -115,4 +117,4 @@ Se ref ficar null, confira se foi passada ao input montado. Se id duplicar, conf
 
 Referências: [useId](https://react.dev/reference/react/useId) · [useRef](https://react.dev/reference/react/useRef).
 
-[← Anterior](33-lazy-loading.md) · [Índice](../README.md) · [Próxima →](35-testes-react.md)
+[← Anterior](33-lazy-loading.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](35-testes-react.md)

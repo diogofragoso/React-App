@@ -1,3 +1,5 @@
+> **Mapa da trilha complementar de clientes.** Para a aplicação atual, consulte o [roteiro do Portal Acadêmico](../README.md#percurso-do-estudante).
+
 <!-- Documento: docs/MAPA-DE-CONCEITOS.md -->
 
 # 🧠 Mapa de conceitos

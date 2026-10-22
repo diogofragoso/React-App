@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/23-custom-hooks.md -->
 
 # 23 · Extraindo custom hooks
 
-[← Anterior](22-ordenacao-e-paginacao.md) · [Índice](../README.md) · **Etapa 23 de 36** · [Próxima →](24-services-por-dominio.md)
+[← Anterior](22-ordenacao-e-paginacao.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 23 de 36** · [Próxima →](24-services-por-dominio.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 22 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -173,4 +175,4 @@ Se houver chamadas duplicadas em telas distintas, confira quantas vezes useClien
 
 Referências: [Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks).
 
-[← Anterior](22-ordenacao-e-paginacao.md) · [Índice](../README.md) · [Próxima →](24-services-por-dominio.md)
+[← Anterior](22-ordenacao-e-paginacao.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](24-services-por-dominio.md)

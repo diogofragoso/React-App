@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/36-build-e-publicacao.md -->
 
 # 36 · Build e publicação
 
-[← Anterior](35-testes-react.md) · [Índice](../README.md) · **Etapa 36 de 36**
+[← Anterior](35-testes-react.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 36 de 36**
 
 **Ponto de partida:** conclua a conferência do capítulo 35 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -54,7 +56,7 @@ Esta documentação não executa publicação nem escolhe um provedor. O resulta
 
 ## 4. Conferir também o material didático
 
-Na raiz de react-project, o verificador documental reconstrói os exemplos em docs/.validacao/projeto e confere TypeScript por etapa:
+Na raiz de frontend-estudo, o verificador documental reconstrói os exemplos em docs/.validacao/projeto e confere TypeScript por etapa:
 
 ```bat
 node docs\scripts\validar-guia.cjs
@@ -79,4 +81,4 @@ Escreva uma lista de pós-publicação com URLs e resultados esperados. Teste ab
 
 Referências: [Publicação com Vite](https://vite.dev/guide/static-deploy.html) · [Variáveis de ambiente](https://vite.dev/guide/env-and-mode).
 
-[← Anterior](35-testes-react.md) · [Índice](../README.md)
+[← Anterior](35-testes-react.md) · [Índice](TRILHA-CLIENTES.md)

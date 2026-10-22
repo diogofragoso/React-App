@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/20-estados-da-interface.md -->
 
 # 20 · Loading, erro e lista vazia
 
-[← Anterior](19-modal-de-confirmacao.md) · [Índice](../README.md) · **Etapa 20 de 36** · [Próxima →](21-pesquisa-e-filtros.md)
+[← Anterior](19-modal-de-confirmacao.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 20 de 36** · [Próxima →](21-pesquisa-e-filtros.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 19 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -166,4 +168,4 @@ Se a mensagem vazia aparecer junto de loading, confira as condições. Se tentar
 
 Referências: [Renderização condicional](https://react.dev/learn/conditional-rendering).
 
-[← Anterior](19-modal-de-confirmacao.md) · [Índice](../README.md) · [Próxima →](21-pesquisa-e-filtros.md)
+[← Anterior](19-modal-de-confirmacao.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](21-pesquisa-e-filtros.md)

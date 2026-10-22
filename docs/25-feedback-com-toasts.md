@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/25-feedback-com-toasts.md -->
 
 # 25 · Feedback global com toasts
 
-[← Anterior](24-services-por-dominio.md) · [Índice](../README.md) · **Etapa 25 de 36** · [Próxima →](26-logout.md)
+[← Anterior](24-services-por-dominio.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 25 de 36** · [Próxima →](26-logout.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 24 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -361,4 +363,4 @@ Se useToast reclamar, confira Provider acima de Routes. Se a mensagem aparecer a
 
 Referências: [useReducer](https://react.dev/reference/react/useReducer) · [Toast](https://react-bootstrap.github.io/docs/components/toasts/).
 
-[← Anterior](24-services-por-dominio.md) · [Índice](../README.md) · [Próxima →](26-logout.md)
+[← Anterior](24-services-por-dominio.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](26-logout.md)

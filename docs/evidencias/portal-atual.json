@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-21",
+  "scope": "portal-atual",
+  "node": "v24.11.1",
+  "npm": "11.6.2",
+  "platform": "win32",
+  "validation": {
+    "documentedFiles": 32,
+    "sourceComparison": "passed (CRLF/LF and trailing whitespace normalized)",
+    "localLinks": "passed",
+    "lint": {
+      "exitCode": 0,
+      "warnings": [
+        "react/only-export-components: src/context/AuthContext.tsx"
+      ]
+    },
+    "storageChecks": 3,
+    "applicationBuild": {
+      "exitCode": 0,
+      "transformedModules": 395
+    },
+    "reconstructedBuild": {
+      "exitCode": 0,
+      "transformedModules": 395,
+      "dependencies": "existing ancestor node_modules",
+      "files": "extracted from IMPLEMENTACAO.md, plus reference package-lock.json"
+    },
+    "sandboxBuild": "initial spawn EPERM; authorized builds outside sandbox passed",
+    "documentationReorganization": {
+      "chapters": 11,
+      "entry": "README.md#percurso-do-estudante",
+      "examples": "docs/portal/*.md and docs/MANUTENCAO.md",
+      "verifiedFiles": 32,
+      "originalSourceHashesUnchanged": true,
+      "reconstructedFilesMatchSource": true,
+      "buildRepeated": false,
+      "note": "Documentation layout changed; application source is identical to the previously built version."
+    }
+  },
+  "sourceHashes": [
+    {
+      "file": "package.json",
+      "sha256": "a89e2083841e5ddfde6be1e666f4ec2b595162701472fe8f798628f047682673"
+    },
+    {
+      "file": "tsconfig.json",
+      "sha256": "ad28d132ee48d6e23917cf5827cace785d0fc01a44ca68b0dda51cc8c3fd3f52"
+    },
+    {
+      "file": "tsconfig.app.json",
+      "sha256": "bbcd078c923aa26585b32222f966a047948210372f3adbf41617e7553ef73e13"
+    },
+    {
+      "file": "tsconfig.node.json",
+      "sha256": "a9e6c7f6fd3ec455a6fe1d4fbb83091e774b62fe116008ab6d8c5e1e88af4629"
+    },
+    {
+      "file": "vite.config.ts",
+      "sha256": "f58edcc886dbf642f0aad60dce0c36a378df3022aa88cec76592532b12d529cc"
+    },
+    {
+      "file": ".oxlintrc.json",
+      "sha256": "3f46d4038fd69c0011da897b887d747e3d66f0bbda8b523a54891fbd473d67ef"
+    },
+    {
+      "file": ".gitignore",
+      "sha256": "bcc252e3dbeee8103acec9dbd619e03fad10105ac8d5b8167c3ba866961770d0"
+    },
+    {
+      "file": ".env.development",
+      "sha256": "d4f12df5c334ff14b62c032f9b7f8db3287b8c08a6568c597d3093ae28c016bd"
+    },
+    {
+      "file": ".env.production",
+      "sha256": "b53426912212e3262e43aa37a85b934a3530637c291eafc9cb01753d4f01ef3d"
+    },
+    {
+      "file": ".env.example",
+      "sha256": "b9a0b6280161fd1bcb8d1cb3962320346a4cc69d1368b428960c78fcb0fd76be"
+    },
+    {
+      "file": "src/types/index.ts",
+      "sha256": "5e562c92a9baa9a1a236b2297b3d6aa9e42af6fbd047073cb4539defe0085659"
+    },
+    {
+      "file": "src/services/api.ts",
+      "sha256": "61f51f5b6776360c817c639ab222052c6fee1d86c6a2e102b92b3820dd389df8"
+    },
+    {
+      "file": "src/context/AuthContext.tsx",
+      "sha256": "a22beab5cf41b525d56af840bc0702e810880d9743f00218670866e603126a4c"
+    },
+    {
+      "file": "src/components/ProtectedRoute.tsx",
+      "sha256": "24ebe2a686e1e852a253cf518ae4a905a9bc43b41ca1beff5ef6566d7cb89c88"
+    },
+    {
+      "file": "src/pages/Home/index.tsx",
+      "sha256": "81d1d81808ece2b33108e764c93a178b84a456f2baf6fd426311f9179965db51"
+    },
+    {
+      "file": "src/pages/Login/index.tsx",
+      "sha256": "a1dd0d4daab7d3c3ad3903de654b01ba46a26f1afe0dbda4b33349f486695700"
+    },
+    {
+      "file": "src/pages/Unauthorized/index.tsx",
+      "sha256": "1780253af67d8bf678c2d7a028ad678a6ab75524bca90272981ea9a9f46ad1bb"
+    },
+    {
+      "file": "src/pages/Aluno/index.tsx",
+      "sha256": "729ba5e9a5a24170181b742620ad1a0a21156fa8ccc28e5f7c8dbbccb5a2ed0e"
+    },
+    {
+      "file": "src/pages/Professor/index.tsx",
+      "sha256": "1d1326853a77d5fe76927a9a6e4eda441c67d80b0161ee38e7344aaa6adabaa8"
+    },
+    {
+      "file": "src/routes/index.tsx",
+      "sha256": "34ac0f5f6edf522bdab33b55830f9712cc8e66c43f75da622f9c0a15e3a04a8d"
+    },
+    {
+      "file": "src/App.tsx",
+      "sha256": "1a8c039a9e228cf02e7c55c7cccb943fdda742a7991471b15b485b54e4b3ff0d"
+    },
+    {
+      "file": "src/main.tsx",
+      "sha256": "d99f54db4acf5d2369251cd06b9728ccddf08e5d3ee35a4f8bf26d3f179aae07"
+    },
+    {
+      "file": "index.html",
+      "sha256": "bd2b8d54d0dbbd30553390e48680b49ffb3fcc6defecd3fad3d346c9ac07fb69"
+    },
+    {
+      "file": "public/staticwebapp.config.json",
+      "sha256": "b21c89c9a20a537a5e72c1599976a174e548577398c36b7576e36354bd86a5ee"
+    },
+    {
+      "file": "staticwebapp.config.json",
+      "sha256": "de4685da2c44a68b75f73c0c56bfd9d4570cb38b2a2643eccd3d0a265cde642d"
+    },
+    {
+      "file": ".github/workflows/azure-static-web-apps-green-pond-0f2bcd00f.yml",
+      "sha256": "4ea6cb4a21c5cb81d3b3bdb571919e4652b2053a0ced2dcface15ef05f1a8184"
+    },
+    {
+      "file": "src/index.css",
+      "sha256": "53fad18d95ded74814d40f96469b1ac4ce2029638778352130b9171c6631c394"
+    },
+    {
+      "file": "src/App.css",
+      "sha256": "c2571ce7245629994b8adc84f6c48e1920f047a4e7e29c89a4aeb51eeb1b5433"
+    },
+    {
+      "file": "src/pages/Login/Login.module.css",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "public/favicon.svg",
+      "sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66"
+    },
+    {
+      "file": "public/icons.svg",
+      "sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d"
+    },
+    {
+      "file": "scripts/test-storage-security.mjs",
+      "sha256": "5c59331fda45f174196fede1e9d74296819ed7adf6576986eeb72eadce701d65"
+    }
+  ],
+  "lockfileSha256": "8df096f69910ec963021bc966741055148985f04b4e2a034b2fa77f6a48ccc87",
+  "bundles": [
+    {
+      "file": "dist/assets/index-CqLr8KVv.css",
+      "sha256": "fa971fcb50b2598d8674dc6a32f167ad9badf5d44a41bb244f47d974ac5f024b",
+      "reconstructedSha256": "fa971fcb50b2598d8674dc6a32f167ad9badf5d44a41bb244f47d974ac5f024b"
+    },
+    {
+      "file": "dist/assets/index-CuVK8sst.js",
+      "sha256": "321c10100a9cefccd3bb9256abd1f100641dd411f13d1a2070a86a57193b2312",
+      "reconstructedSha256": "321c10100a9cefccd3bb9256abd1f100641dd411f13d1a2070a86a57193b2312"
+    }
+  ],
+  "notExecuted": [
+    "clean network installation",
+    "browser/API integration",
+    "database writes",
+    "Azure deployment"
+  ]
+}

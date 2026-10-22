@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/04-tela-de-login.md -->
 
 # 04 · Construindo a tela de login
 
-[← Anterior](03-servicos-e-tipagens.md) · [Índice](../README.md) · **Etapa 4 de 36** · [Próxima →](05-contexto-de-autenticacao.md)
+[← Anterior](03-servicos-e-tipagens.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 4 de 36** · [Próxima →](05-contexto-de-autenticacao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 03 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -118,4 +120,4 @@ Se ocorrer 400, confira nomes email/password e a validação da API. Se a interf
 
 Referências: [State como snapshot](https://react.dev/learn/state-as-a-snapshot) · [Eventos](https://react.dev/learn/responding-to-events) · [Regras dos Hooks](https://react.dev/reference/rules/rules-of-hooks).
 
-[← Anterior](03-servicos-e-tipagens.md) · [Índice](../README.md) · [Próxima →](05-contexto-de-autenticacao.md)
+[← Anterior](03-servicos-e-tipagens.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](05-contexto-de-autenticacao.md)

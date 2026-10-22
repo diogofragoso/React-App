@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/19-modal-de-confirmacao.md -->
 
 # 19 · Modal de confirmação
 
-[← Anterior](18-exclusao-de-cliente.md) · [Índice](../README.md) · **Etapa 19 de 36** · [Próxima →](20-estados-da-interface.md)
+[← Anterior](18-exclusao-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 19 de 36** · [Próxima →](20-estados-da-interface.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 18 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -178,4 +180,4 @@ Se DELETE ocorrer ao abrir, confira o callback passado ao cartão. Se fechar dur
 
 Referências: [Modal do React Bootstrap](https://react-bootstrap.github.io/docs/components/modal/).
 
-[← Anterior](18-exclusao-de-cliente.md) · [Índice](../README.md) · [Próxima →](20-estados-da-interface.md)
+[← Anterior](18-exclusao-de-cliente.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](20-estados-da-interface.md)

@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/31-renderizacoes.md -->
 
 # 31 · Entendendo renderizações
 
-[← Anterior](30-revisao-da-arquitetura.md) · [Índice](../README.md) · **Etapa 31 de 36** · [Próxima →](32-otimizacao.md)
+[← Anterior](30-revisao-da-arquitetura.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 31 de 36** · [Próxima →](32-otimizacao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 30 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -94,4 +96,4 @@ Contagens duplicadas no desenvolvimento podem ser verificações de StrictMode. 
 
 Referências: [Render e commit](https://react.dev/learn/render-and-commit) · [Profiler](https://react.dev/reference/react/Profiler).
 
-[← Anterior](30-revisao-da-arquitetura.md) · [Índice](../README.md) · [Próxima →](32-otimizacao.md)
+[← Anterior](30-revisao-da-arquitetura.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](32-otimizacao.md)

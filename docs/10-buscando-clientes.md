@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/10-buscando-clientes.md -->
 
 # 10 · Buscando os primeiros clientes
 
-[← Anterior](09-dashboard.md) · [Índice](../README.md) · **Etapa 10 de 36** · [Próxima →](11-renderizando-listas.md)
+[← Anterior](09-dashboard.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 10 de 36** · [Próxima →](11-renderizando-listas.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 09 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -175,4 +177,4 @@ Observe os valores iniciais no React DevTools. Compare ausência de registros, e
 
 Referências: [useEffect](https://react.dev/reference/react/useEffect) · [Axios GET](https://axios-http.com/docs/api_intro).
 
-[← Anterior](09-dashboard.md) · [Índice](../README.md) · [Próxima →](11-renderizando-listas.md)
+[← Anterior](09-dashboard.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](11-renderizando-listas.md)

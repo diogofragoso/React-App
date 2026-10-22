@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/35-testes-react.md -->
 
 # 35 · Testando a aplicação React
 
-[← Anterior](34-acessibilidade.md) · [Índice](../README.md) · **Etapa 35 de 36** · [Próxima →](36-build-e-publicacao.md)
+[← Anterior](34-acessibilidade.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 35 de 36** · [Próxima →](36-build-e-publicacao.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 34 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -304,4 +306,4 @@ Se faltar jest-dom, confira setupFiles. Se houver elementos de testes anteriores
 
 Referências: [Vitest](https://vitest.dev/guide/) · [Testing Library](https://testing-library.com/docs/react-testing-library/intro/) · [user-event](https://testing-library.com/docs/user-event/intro/).
 
-[← Anterior](34-acessibilidade.md) · [Índice](../README.md) · [Próxima →](36-build-e-publicacao.md)
+[← Anterior](34-acessibilidade.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](36-build-e-publicacao.md)

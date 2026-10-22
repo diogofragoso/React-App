@@ -1,8 +1,10 @@
+> **Trilha complementar de clientes:** este capítulo não reproduz o Portal Acadêmico atual. Para implementar o projeto de `src`, siga [IMPLEMENTACAO.md](../README.md#percurso-do-estudante). Consulte o [índice desta trilha](TRILHA-CLIENTES.md) para seguir seus exemplos cumulativos.
+
 <!-- Documento: docs/26-logout.md -->
 
 # 26 · Implementando logout
 
-[← Anterior](25-feedback-com-toasts.md) · [Índice](../README.md) · **Etapa 26 de 36** · [Próxima →](27-perfis-e-permissoes.md)
+[← Anterior](25-feedback-com-toasts.md) · [Índice](TRILHA-CLIENTES.md) · **Etapa 26 de 36** · [Próxima →](27-perfis-e-permissoes.md)
 
 **Ponto de partida:** conclua a conferência do capítulo 25 antes de avançar. Os caminhos partem da raiz do frontend, onde fica `package.json`. Comandos são para o **CMD**.
 
@@ -214,6 +216,6 @@ Compare limpar state com limpar cookie no servidor. Teste nova visita à Home em
 
 Se F5 ainda autenticar, confira Set-Cookie de remoção e path do cookie na API. Não tente usar document.cookie para remover um HttpOnly.
 
-Referências: [Sessão e cookies da API](../../api_t13/docs/05-autenticacao-com-jwt.md).
+Referências: [Sessão e cookies da API](../../express.js_API/docs/05-autenticacao-com-jwt.md).
 
-[← Anterior](25-feedback-com-toasts.md) · [Índice](../README.md) · [Próxima →](27-perfis-e-permissoes.md)
+[← Anterior](25-feedback-com-toasts.md) · [Índice](TRILHA-CLIENTES.md) · [Próxima →](27-perfis-e-permissoes.md)
