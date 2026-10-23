@@ -28,6 +28,7 @@ export interface User {
   email: string;
   createdAt: string;
   userTypeId?: number;
+  userTypeCode?: string;
   role?: string;
 }
 
@@ -58,7 +59,7 @@ export interface CreateUserInput {
   name?: string;
   email: string;
   password: string;
-  userTypeId: number;
+  userTypeCode: '1' | '2';
 }
 
 export interface UserTypeOption {
@@ -69,7 +70,7 @@ export interface UserTypeOption {
 ```
 <!-- endsource -->
 
-`LoginCredentials` descreve a entrada do login. `CreateUserInput` inclui `userTypeId`, escolhido no cadastro. `User.role` é opcional no TypeScript, mas é necessário para acessar os painéis. A API pode retornar `name: null` quando o nome é omitido; o tipo atual declara `name: string`, uma divergência existente. As telas usam `name || email`. `Cliente`, `ClienteInput`, `ApiError` e `UserTypeOption` são tipos presentes no arquivo, sem CRUD ou carregamento dinâmico de perfis nas telas atuais.
+`LoginCredentials` descreve a entrada do login. `CreateUserInput` inclui `userTypeCode`, escolhido no cadastro. `User.role` é opcional no TypeScript, mas é necessário para acessar os painéis. A API pode retornar `name: null` quando o nome é omitido; o tipo atual declara `name: string`, uma divergência existente. As telas usam `name || email`. `Cliente`, `ClienteInput`, `ApiError` e `UserTypeOption` são tipos presentes no arquivo, sem CRUD ou carregamento dinâmico de perfis nas telas atuais.
 
 **Arquivo: `src/services/api.ts`**
 

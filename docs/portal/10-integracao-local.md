@@ -10,13 +10,13 @@ Os caminhos partem da raiz do frontend, onde fica package.json. Crie as subpasta
 
 Consulte o [projeto Express](../../../express.js_API/README.md) para instalar o backend, configurar PostgreSQL, aplicar seu processo de migrações/contrato e definir `DATABASE_URL` e `JWT_SECRET`. O frontend não cria banco nem tipos de usuário.
 
-Antes de testar cadastro, confira o catálogo real de tipos: o formulário e `toPublicUser` esperam `2 = aluno` e `3 = professor`. O script atual `src/scripts/init-rbac.ts` da API ainda declara `1 = ALUNO` e `2 = ADMIN`. **Ele não prepara o catálogo esperado por este portal.** Confira os dados sem alterá-los primeiro, por exemplo no cliente SQL:
+Antes de testar cadastro, confira os códigos "1" (aluno) e "2" (professor) no catálogo. O backend resolve os IDs e deriva o perfil pelo código, sem exigir IDs fixos. O script `src/scripts/init-rbac.ts` prepara os tipos ausentes por código e preserva os IDs existentes.
 
 ```sql
-SELECT id, code, name FROM public."UserType" ORDER BY id;
+SELECT id, code, name FROM public.tipo_user ORDER BY id;
 ```
 
-Se os IDs 2 e 3 não existirem com o significado esperado, será necessário alinhar o catálogo e as contas existentes no backend antes de validar o cadastro. Não execute aquele script supondo que criará aluno/professor, nem renumere tipos em banco com dados sem revisar suas referências. O erro de cadastro pode também ficar preso na limitação de loading descrita na etapa 7.
+O erro de cadastro pode também ficar preso na limitação de loading descrita na etapa 7.
 
 No terminal da API, depois da preparação indicada em seu guia:
 

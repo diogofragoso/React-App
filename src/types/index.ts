@@ -10,6 +10,7 @@ export interface User {
   email: string;
   createdAt: string;
   userTypeId?: number;
+  userTypeCode?: string;
   role?: string;
 }
 
@@ -40,7 +41,7 @@ export interface CreateUserInput {
   name?: string;
   email: string;
   password: string;
-  userTypeId: number;
+  userTypeCode: '1' | '2';
 }
 
 export interface UserTypeOption {

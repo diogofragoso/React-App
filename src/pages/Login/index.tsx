@@ -34,7 +34,7 @@ export function Login() {
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
-  const [regUserTypeId, setRegUserTypeId] = useState<number>(2); // 2 = Aluno (padrão), 3 = Professor
+  const [regUserTypeCode, setRegUserTypeCode] = useState<CreateUserInput['userTypeCode']>('1');
   const [regLoading, setRegLoading] = useState(false);
   const [regError, setRegError] = useState<string | null>(null);
   const [regSuccess, setRegSuccess] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export function Login() {
     setRegName('');
     setRegEmail('');
     setRegPassword('');
-    setRegUserTypeId(2);
+    setRegUserTypeCode('1');
     setRegError(null);
     setRegSuccess(null);
     setShowRegisterModal(true);
@@ -96,7 +96,7 @@ export function Login() {
       name: regName.trim() || undefined,
       email: regEmail.trim(),
       password: regPassword,
-      userTypeId: Number(regUserTypeId),
+      userTypeCode: regUserTypeCode,
     };
 
     try {
@@ -248,12 +248,12 @@ export function Login() {
             <Form.Group className="mb-3" controlId="modalRegUserType">
               <Form.Label>Tipo de Perfil</Form.Label>
               <Form.Select
-                value={regUserTypeId}
-                onChange={(e) => setRegUserTypeId(Number(e.target.value))}
+                value={regUserTypeCode}
+                onChange={(e) => setRegUserTypeCode(e.target.value as CreateUserInput['userTypeCode'])}
                 disabled={regLoading || !!regSuccess}
               >
-                <option value={2}>Aluno</option>
-                <option value={3}>Professor</option>
+                <option value="1">Aluno</option>
+                <option value="2">Professor</option>
               </Form.Select>
               <Form.Text className="text-muted">
                 Alunos e Professores possuem áreas e permissões isoladas.

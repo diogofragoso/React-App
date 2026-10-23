@@ -154,7 +154,7 @@ export function Login() {
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
-  const [regUserTypeId, setRegUserTypeId] = useState<number>(2); // 2 = Aluno (padrão), 3 = Professor
+  const [regUserTypeCode, setRegUserTypeCode] = useState<CreateUserInput['userTypeCode']>('1');
   const [regLoading, setRegLoading] = useState(false);
   const [regError, setRegError] = useState<string | null>(null);
   const [regSuccess, setRegSuccess] = useState<string | null>(null);
@@ -164,7 +164,7 @@ export function Login() {
     setRegName('');
     setRegEmail('');
     setRegPassword('');
-    setRegUserTypeId(2);
+    setRegUserTypeCode('1');
     setRegError(null);
     setRegSuccess(null);
     setShowRegisterModal(true);
@@ -216,7 +216,7 @@ export function Login() {
       name: regName.trim() || undefined,
       email: regEmail.trim(),
       password: regPassword,
-      userTypeId: Number(regUserTypeId),
+      userTypeCode: regUserTypeCode,
     };
 
     try {
@@ -368,12 +368,12 @@ export function Login() {
             <Form.Group className="mb-3" controlId="modalRegUserType">
               <Form.Label>Tipo de Perfil</Form.Label>
               <Form.Select
-                value={regUserTypeId}
-                onChange={(e) => setRegUserTypeId(Number(e.target.value))}
+                value={regUserTypeCode}
+                onChange={(e) => setRegUserTypeCode(e.target.value as CreateUserInput['userTypeCode'])}
                 disabled={regLoading || !!regSuccess}
               >
-                <option value={2}>Aluno</option>
-                <option value={3}>Professor</option>
+                <option value="1">Aluno</option>
+                <option value="2">Professor</option>
               </Form.Select>
               <Form.Text className="text-muted">
                 Alunos e Professores possuem áreas e permissões isoladas.
@@ -407,7 +407,7 @@ export function Login() {
 
 No login, `useState` controla e-mail, senha, erros e envio; `onSubmit` impede o reload e aguarda `login`. Tanto o submit quanto o efeito que observa `user` podem solicitar navegação. `professor` vai para `/professor`, `aluno` para `/aluno` e outros perfis vão para `/` no submit. Uma conta admin não tem painel próprio nem acesso automático aos dois painéis.
 
-O modal envia `POST /users` com nome opcional, e-mail sem espaços nas extremidades, senha e `userTypeId` numérico (`2` aluno, `3` professor). Não consulta catálogo de perfis na API. O HTML exige senha de oito caracteres; o backend ainda valida limites e duplicidade. Cadastro bem-sucedido exibe confirmação, preenche o e-mail do login e agenda fechamento em 1,5 segundo; não autentica automaticamente.
+O modal envia `POST /users` com nome opcional, e-mail sem espaços nas extremidades, senha e `userTypeCode` (`"1"` (aluno) ou `"2"` (professor)). Não consulta catálogo de perfis na API. O HTML exige senha de oito caracteres; o backend ainda valida limites e duplicidade. Cadastro bem-sucedido exibe confirmação, preenche o e-mail do login e agenda fechamento em 1,5 segundo; não autentica automaticamente.
 
 **Limitação existente:** o `finally` de `handleRegisterSubmit` chama `setLoading(false)` em vez de `setRegLoading(false)`. Após um envio, `regLoading` permanece verdadeiro até reabrir o modal, quando houver caminho para isso. Em erro de cadastro, os campos e os botões podem permanecer bloqueados. O roteiro preserva o código atual e não afirma que esse fluxo de recuperação funciona. Corrigir o aplicativo exige trocar esse setter e validar os cenários de erro e sucesso; depois sincronize os exemplos conforme o [guia de manutenção](../MANUTENCAO.md).
 

@@ -6,12 +6,12 @@ Contrato conferido por leitura de rotas, controllers, services e schemas do proj
 
 | Operação usada pelo portal | Entrada | Sucesso | Uso no React |
 |---|---|---|---|
-| `POST /users` | `name?`, `email`, `password`, `userTypeId` | 201, usuário público | Modal de cadastro |
+| `POST /users` | `name?`, `email`, `password`, `userTypeCode` | 201, usuário público | Modal de cadastro |
 | `POST /login` | `email`, `password` | 200, `{ token, user }` e `Set-Cookie` | `AuthContext.login` |
 | `GET /users` | Cookie válido | 200, array contendo somente a própria conta | Restauração de sessão, elemento `[0]` |
 | `POST /logout` | Sem corpo obrigatório | 204, limpeza do cookie | `AuthContext.logout` |
 
-Cadastro não autentica automaticamente. `userTypeId` aceita somente 2 ou 3, com padrão 2. O nome é opcional; quando informado deve ter de 2 a 100 caracteres após trim. O e-mail é normalizado para minúsculas, validado e limitado a 254 caracteres. A senha deve ter ao menos oito caracteres e até 72 bytes UTF-8. O schema rejeita campos extras.
+Cadastro não autentica automaticamente. `userTypeCode` aceita `"1"` (aluno) ou `"2"` (professor), com padrão `"1"`. O backend resolve o ID por `tipo_user.code`; tipo ausente retorna 400. O nome é opcional; quando informado deve ter de 2 a 100 caracteres após trim. O e-mail é normalizado para minúsculas, validado e limitado a 254 caracteres. A senha deve ter ao menos oito caracteres e até 72 bytes UTF-8. O schema rejeita campos extras.
 
 Exemplo de cadastro:
 
@@ -20,7 +20,7 @@ Exemplo de cadastro:
   "name": "Maria Silva",
   "email": "maria@example.com",
   "password": "senha-de-estudo",
-  "userTypeId": 2
+  "userTypeCode": "1"
 }
 ```
 
@@ -33,13 +33,14 @@ Exemplo de usuário público; IDs e datas são ilustrativos:
   "email": "maria@example.com",
   "createdAt": "2026-10-21T12:00:00.000Z",
   "userTypeId": 2,
+  "userTypeCode": "1",
   "role": "aluno"
 }
 ```
 
-`name` pode ser `null` quando omitido, embora o tipo atual do frontend declare `string`. `toPublicUser` mapeia ID 3 para `professor`, ID 4 para `admin` e todos os demais para `aluno`. O frontend usa `role`, sem derivá-lo de `userTypeId`. Admin não possui painel nem permissão especial nas rotas React.
+`name` pode ser `null` quando omitido, embora o tipo atual do frontend declare `string`. `toPublicUser` consulta o tipo pelo ID salvo e retorna `userTypeCode` e `role` mapeado pelo código ("1" → aluno, "2" → professor, "3" → admin), independentemente do ID. O frontend usa `role`, sem derivá-lo de `userTypeId`. Admin não possui painel nem permissão especial nas rotas React.
 
-O modal pressupõe `2 = aluno` e `3 = professor`. O script `src/scripts/init-rbac.ts` da API ainda define `1 = ALUNO` e `2 = ADMIN`, portanto não prepara o catálogo deste portal. Confira o catálogo real e alinhe os dados antes do cadastro; não presuma compatibilidade entre esse script e o service.
+O modal envia códigos. O script `src/scripts/init-rbac.ts` prepara os códigos textuais "1" (aluno), "2" (professor) e "3" (admin), preservando IDs existentes.
 
 ## Sessão e permissões
 

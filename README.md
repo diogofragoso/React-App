@@ -24,7 +24,7 @@ Antes de começar, tenha Node.js e npm instalados e uma pasta nova para o estudo
 
 Os caminhos dos arquivos partem da raiz do frontend. Crie as subpastas indicadas e copie cada arquivo completo. Os imports ficam completos ao final do capítulo 9; a execução integrada acontece no capítulo 10. Não misture arquivos da trilha complementar de clientes com os do portal.
 
-Os limites existentes no código são explicados nos capítulos correspondentes, incluindo o loading do cadastro e a divergência do catálogo de perfis na API. Leia essas observações antes dos testes manuais.
+Os limites existentes no código são explicados nos capítulos correspondentes, incluindo o loading do cadastro e a preparação do catálogo de perfis na API. Leia essas observações antes dos testes manuais.
 
 ## Executar uma cópia existente
 
@@ -37,7 +37,7 @@ npm.cmd ci
 npm.cmd run dev -- --port 5173 --strictPort
 ```
 
-O desenvolvimento usa a API em `http://localhost:3000`. Prepare o [projeto Express](../express.js_API/README.md) e confira o [contrato](docs/CONTRATO-DA-API.md). O cadastro exige catálogo com `2 = aluno` e `3 = professor`; o roteiro explica a divergência existente no script de tipos da API.
+O desenvolvimento usa a API em `http://localhost:3000`. Prepare o [projeto Express](../express.js_API/README.md) e confira o [contrato](docs/CONTRATO-DA-API.md). O cadastro exige "1" (aluno) e "2" (professor) em `tipo_user`; os IDs são resolvidos pelo backend.
 
 ## Referências para consulta
 
@@ -64,3 +64,13 @@ Não existe script `npm test` neste projeto. Os testes Vitest dos capítulos ant
 ## Material para quem mantém o curso
 
 O [guia de manutenção](docs/MANUTENCAO.md) explica os verificadores e a atualização dos exemplos. O [relatório de validação](docs/RELATORIO-DE-VALIDACAO.md) registra resultados e limites. Esses materiais apoiam a revisão do curso e não são etapas obrigatórias para o estudante construir a aplicação.
+
+## Cadastro por código de tipo
+
+Envie `POST /users` com `Content-Type: application/json`:
+
+```json
+{"name":"João Silva","email":"joao@example.com","password":"MinhaSenha123","userTypeCode":"1"}
+```
+
+`userTypeCode` aceita `"1"` (aluno, padrão) ou `"2"` (professor). O backend consulta `tipo_user.code` e salva o ID correspondente. `userTypeId` no cadastro é rejeitado. Tipo ausente no catálogo retorna 400; sucesso retorna 201 com `userTypeId`, `userTypeCode` e `role`, sem senha. A atualização de conta não permite trocar o tipo. O script `src/scripts/init-rbac.ts` do backend prepara os códigos textuais "1" (aluno), "2" (professor) e "3" (admin), preservando IDs existentes. O código "3" (admin) não é aceito no cadastro público. Exemplos que omitem o tipo usam "1" (aluno).
