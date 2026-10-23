@@ -24,7 +24,7 @@ Antes de começar, tenha Node.js e npm instalados e uma pasta nova para o estudo
 
 Os caminhos dos arquivos partem da raiz do frontend. Crie as subpastas indicadas e copie cada arquivo completo. Os imports ficam completos ao final do capítulo 9; a execução integrada acontece no capítulo 10. Não misture arquivos da trilha complementar de clientes com os do portal.
 
-Os limites existentes no código são explicados nos capítulos correspondentes, incluindo o loading do cadastro e a preparação do catálogo de perfis na API. Leia essas observações antes dos testes manuais.
+Os limites existentes no código são explicados nos capítulos correspondentes, incluindo a preparação da tabela `public.tipo_user` na API antes do cadastro. Leia essas observações antes dos testes manuais.
 
 ## Executar uma cópia existente
 

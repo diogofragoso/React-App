@@ -167,6 +167,7 @@ export function Login() {
     setRegUserTypeCode('1');
     setRegError(null);
     setRegSuccess(null);
+    setRegLoading(false);
     setShowRegisterModal(true);
   };
 
@@ -242,7 +243,7 @@ export function Login() {
         setRegError('Erro ao realizar cadastro. Verifique os dados e tente novamente.');
       }
     } finally {
-      setLoading(false);
+      setRegLoading(false);
     }
   };
 
@@ -409,7 +410,7 @@ No login, `useState` controla e-mail, senha, erros e envio; `onSubmit` impede o 
 
 O modal envia `POST /users` com nome opcional, e-mail sem espaços nas extremidades, senha e `userTypeCode` (`"1"` (aluno) ou `"2"` (professor)). Não consulta catálogo de perfis na API. O HTML exige senha de oito caracteres; o backend ainda valida limites e duplicidade. Cadastro bem-sucedido exibe confirmação, preenche o e-mail do login e agenda fechamento em 1,5 segundo; não autentica automaticamente.
 
-**Limitação existente:** o `finally` de `handleRegisterSubmit` chama `setLoading(false)` em vez de `setRegLoading(false)`. Após um envio, `regLoading` permanece verdadeiro até reabrir o modal, quando houver caminho para isso. Em erro de cadastro, os campos e os botões podem permanecer bloqueados. O roteiro preserva o código atual e não afirma que esse fluxo de recuperação funciona. Corrigir o aplicativo exige trocar esse setter e validar os cenários de erro e sucesso; depois sincronize os exemplos conforme o [guia de manutenção](../MANUTENCAO.md).
+**Controle de estado no modal:** o bloco `finally` de `handleRegisterSubmit` (assim como `handleOpenRegister`) chama `setRegLoading(false)`, liberando os campos e os botões após o envio para permitir corrigir dados em caso de erro (como e-mail duplicado) ou realizar um novo cadastro. Após alterar exemplos de código, sincronize os blocos conforme o [guia de manutenção](../MANUTENCAO.md).
 
 **Arquivo: `src/pages/Unauthorized/index.tsx`**
 

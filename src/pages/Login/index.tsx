@@ -47,6 +47,7 @@ export function Login() {
     setRegUserTypeCode('1');
     setRegError(null);
     setRegSuccess(null);
+    setRegLoading(false);
     setShowRegisterModal(true);
   };
 
@@ -122,7 +123,7 @@ export function Login() {
         setRegError('Erro ao realizar cadastro. Verifique os dados e tente novamente.');
       }
     } finally {
-      setLoading(false);
+      setRegLoading(false);
     }
   };
 
